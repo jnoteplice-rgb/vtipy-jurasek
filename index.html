@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤣 Vtipy pro Juráska! 🎉</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 520px; width: 100%; text-align: center; }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 8px;
+            animation: bounceIn 0.8s ease;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+
+        .input-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 26px 22px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin-bottom: 22px;
+        }
+
+        .input-label {
+            font-size: 1.05rem;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .input-row { display: flex; gap: 10px; margin-bottom: 14px; }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 14px 18px;
+            border: 3px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus { border-color: #764ba2; }
+
+        .btn-search {
+            padding: 14px 22px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-search:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5); }
+        .btn-search:active { transform: scale(0.95); }
+
+        .quick-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+        .tag {
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border: none;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .tag:hover { transform: scale(1.1); }
+
+        .joke-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 24px;
+            padding: 30px 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .joke-card.visible { display: block; }
+
+        .joke-emoji {
+            font-size: 3rem;
+            margin-bottom: 14px;
+            animation: wiggle 1s ease infinite;
+        }
+
+        .joke-text {
+            font-size: 1.15rem;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            white-space: pre-line;
+        }
+
+        .joke-punchline {
+            font-size: 1.25rem;
+            color: #f5576c;
+            font-weight: bold;
+            margin-top: 10px;
+            white-space: pre-line;
+        }
+
+        .joke-meta {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 14px;
+        }
+
+        .btn-another {
+            margin-top: 14px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-another:hover { transform: scale(1.05); }
+
+        .error-msg {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 18px;
+            color: #e74c3c;
+            display: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .error-msg.visible { display: block; }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .stats {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-emoji" style="top:10%; left:5%;">😂</div>
+    <div class="floating-emoji" style="top:30%; right:8%; animation-delay:-2s;">🤪</div>
+    <div class="floating-emoji" style="top:60%; left:3%; animation-delay:-4s;">😜</div>
+    <div class="floating-emoji" style="bottom:15%; right:5%; animation-delay:-1s;">🎉</div>
+
+    <div class="container">
+        <h1>🤣 Vtipy pro Juráska!</h1>
+        <p class="subtitle">Napiš slovo a najdi k němu vtip 🎯</p>
+
+        <div class="input-section">
+            <label class="input-label">🔍 Co tě zajímá?</label>
+            <div class="input-row">
+                <input type="text" id="keyword" placeholder="např. škola, pes, fotbal..." autocomplete="off" autofocus>
+                <button class="btn-search" onclick="hledejVtip()" title="Hledat vtip">🚀</button>
+            </div>
+            <div class="quick-tags">
+                <button class="tag" onclick="rychleHledani('škola')">🏫 Škola</button>
+                <button class="tag" onclick="rychleHledani('Pepíček')">👦 Pepíček</button>
+                <button class="tag" onclick="rychleHledani('Hurvínek')">🎭 Hurvínek</button>
+                <button class="tag" onclick="rychleHledani('Chuck')">🥋 Chuck Norris</button>
+                <button class="tag" onclick="rychleHledani('pes')">🐕 Pes</button>
+                <button class="tag" onclick="rychleHledani('fotbal')">⚽ Fotbal</button>
+                <button class="tag" onclick="rychleHledani('zvíře')">🦁 Zvířata</button>
+                <button class="tag" onclick="rychleHledani('doktor')">💊 Doktor</button>
+                <button class="tag" onclick="rychleHledani('počítač')">💻 Počítač</button>
+                <button class="tag" onclick="rychleHledani('jídlo')">🍕 Jídlo</button>
+                <button class="tag" onclick="rychleHledani('hádanka')">🎯 Hádanky</button>
+                <button class="tag" onclick="rychleHledani('')">🎲 Náhodný</button>
+            </div>
+            <p class="stats" id="stats"></p>
+        </div>
+
+        <div class="error-msg" id="error"></div>
+
+        <div class="joke-card" id="jokeCard">
+            <div class="joke-emoji" id="jokeEmoji">😂</div>
+            <div class="joke-text" id="jokeSetup"></div>
+            <div class="joke-punchline" id="jokePunchline"></div>
+            <div class="joke-meta" id="jokeMeta"></div>
+            <button class="btn-another" onclick="hledejVtip()">🔄 Další vtip!</button>
+        </div>
+    </div>
+
+    <script>
+        // ========================================================
+        // DATABÁZE KLASICKÝCH ČESKÝCH VTIPŮ PRO DĚTI
+        // ========================================================
+        // Každý vtip má: setup, punchline (může být prázdná pro jednovětné),
+        // a tags (klíčová slova pro vyhledávání)
+        const VTIPY = [
+            // === PEPÍČEK / ŠKOLA ===
+            { setup: "Paní učitelka se ptá Pepíčka:\n„Pepíčku, vyjmenuj čtyři domácí zvířata.\"", punchline: "„Pes, kočka a dva králíci.\"", tags: ["pepíček","škola","učitelka","zvířata","pes","kočka","králík"] },
+            { setup: "„Pepíčku, kdybys měl tři jablka a dal Tomovi dvě, co bys měl?\"", punchline: "„No přece jedno!\"", tags: ["pepíček","škola","matematika","jablko"] },
+            { setup: "Paní učitelka: „Pepíčku, co je to idiom?\"\nPepíček: „To nevím, paní učitelko.\"\n„No přece ustálené slovní spojení, vyjmenuj nějaké.\"", punchline: "Pepíček: „Paní učitelko, jdi do háje!\"", tags: ["pepíček","škola","učitelka","čeština"] },
+            { setup: "„Pepíčku, proč jsi dneska přišel pozdě?\"", punchline: "„Protože cedule u silnice říkala: Škola – zpomal!\"", tags: ["pepíček","škola","cesta"] },
+            { setup: "Tatínek: „Pepíčku, co jste dneska měli ve škole?\"\n„Matematiku.\"\n„A co jste se naučili?\"\n„Že dvě a dvě je pět.\"\n„Ale Pepíčku, to je blbost! Zítra se to naučíš správně.\"", punchline: "„Ale táto, zítra máme češtinu!\"", tags: ["pepíček","škola","matematika","tatínek","táta"] },
+            { setup: "Pepíček tatínkovi: „Tati, dostal jsem dneska ve škole jedničku!\"\n„No výborně, a z čeho?\"", punchline: "„Z nosu, paní učitelka má dobrou mušku.\"", tags: ["pepíček","škola","jednička","tatínek","táta","nos"] },
+            { setup: "Paní učitelka: „Pepíčku, vyjmenuj pět afrických zvířat.\"", punchline: "„Dva lvi a tři žirafy.\"", tags: ["pepíček","škola","učitelka","zvíře","afrika","lev","žirafa"] },
+            { setup: "„Pepíčku, kolik je pět minus pět?\"\nPepíček mlčí.\n„No tak, Pepíčku, kolik to je?\"", punchline: "„Paní učitelko, já nevím. Když tam nic není, jak to mám spočítat?\"", tags: ["pepíček","škola","matematika","učitelka"] },
+            { setup: "Pepíček přijde domů a povídá:\n„Tati, prospěl jsem za pololetí!\"\n„No to je skvělé! V čem?\"", punchline: "„V angličtině. Akorát mě poslali do druhé třídy.\"", tags: ["pepíček","škola","angličtina","tatínek","táta","vysvědčení"] },
+            { setup: "„Pepíčku, proč máš v diáři tolik poznámek?\"", punchline: "„Protože mám hodně kamarádů, paní učitelko!\"", tags: ["pepíček","škola","poznámka","učitelka"] },
+            { setup: "Pepíček tatínkovi: „Tati, pomůžeš mi s úkolem?\"\n„Ne, Pepíčku, to by nebylo správné.\"", punchline: "„Tak aspoň to zkus, táto!\"", tags: ["pepíček","škola","úkol","tatínek","táta"] },
+            { setup: "Paní učitelka: „Co se stalo v roce 1492?\"\nPepíček: „Kolumbus objevil Ameriku.\"\n„Správně. A co v roce 1493?\"", punchline: "„Kolumbus objevil Ameriku podruhé.\"", tags: ["pepíček","škola","dějepis","historie","kolumbus"] },
+            { setup: "„Pepíčku, jak se píše přechodník?\"", punchline: "„Já ho nepíšu, já ho přecházím.\"", tags: ["pepíček","škola","čeština"] },
+            { setup: "Paní učitelka: „Kdo mi řekne, co je to polopustina?\"\nPepíček zvedne ruku: „To je, když je lednička napůl prázdná!\"", punchline: "", tags: ["pepíček","škola","učitelka","zeměpis","lednička"] },
+
+            // === ZVÍŘATA ===
+            { setup: "Co řekne kráva ráno, když vstane?", punchline: "Búúú-dobré ráno!", tags: ["zvíře","kráva","ráno"] },
+            { setup: "Proč mají sloni velké uši?", punchline: "Protože malé by jim nestačily!", tags: ["zvíře","slon"] },
+            { setup: "Co dělá včela, když ji bolí bříško?", punchline: "Bzučí na záchod!", tags: ["zvíře","včela"] },
+            { setup: "Jaký je rozdíl mezi slonem a komárem?", punchline: "Slon může mít komáry, ale komár slony ne.", tags: ["zvíře","slon","komár"] },
+            { setup: "Co dělá kočka v knihovně?", punchline: "Hledá myš... na počítači.", tags: ["zvíře","kočka","knihovna","počítač","myš"] },
+            { setup: "Přijde pes k veterináři a říká:\n„Pane doktore, já nemůžu štěkat.\"", punchline: "Veterinář: „No to jste mě teda překvapil.\"", tags: ["zvíře","pes","veterinář","doktor"] },
+            { setup: "Proč kohout ráno kokrhá?", punchline: "Protože slepice neumí pískat.", tags: ["zvíře","kohout","slepice","ráno"] },
+            { setup: "Co je to žirafa?", punchline: "Kůň, kterému dorostl krk až do nebe.", tags: ["zvíře","žirafa","kůň"] },
+            { setup: "Potkají se dva červíci v jablku.\n„Čau, co tady děláš?\"", punchline: "„Promiň, spletl jsem si adresu.\"", tags: ["zvíře","červ","jablko"] },
+            { setup: "Co dělá ryba, když nemůže spát?", punchline: "Počítá vlny.", tags: ["zvíře","ryba","spánek"] },
+            { setup: "Proč ptáci letí na jih?", punchline: "Protože pěšky by to bylo moc daleko.", tags: ["zvíře","pták","jih"] },
+            { setup: "Jak se řekne slon, který se moc nají?", punchline: "Obslon.", tags: ["zvíře","slon","jídlo"] },
+            { setup: "Co je to žralok v obleku?", punchline: "Advokát.", tags: ["zvíře","žralok","advokát"] },
+
+            // === FOTBAL / SPORT ===
+            { setup: "Proč fotbalista nosí do školy učebnici matematiky?", punchline: "Aby uměl počítat góly!", tags: ["fotbal","sport","škola","matematika","gól"] },
+            { setup: "Dva fotbalisté se baví před zápasem:\n„Věříš na život po smrti?\"\n„Věřím.\"", punchline: "„Ty jo, to je skvělý! Včera jsi říkal, že nepřijdeš na trénink, protože máš pohřeb dědy, a dneska tě tam viděli!\"", tags: ["fotbal","sport","trénink"] },
+            { setup: "Přijde fotbalista do školy a ptá se učitele:\n„Pane učiteli, bude se dávat pětka za něco, co člověk neudělal?\"\n„No to samozřejmě ne!\"", punchline: "„Tak to je dobře, protože jsem neudělal domácí úkol.\"", tags: ["fotbal","sport","škola","učitel","úkol"] },
+            { setup: "Proč chodí brankář vždy poslední z hřiště?", punchline: "Protože musí posbírat všechny góly, co dostal.", tags: ["fotbal","sport","brankář","gól"] },
+            { setup: "Co řekne trenér hráči, který dal vlastní gól?", punchline: "„Aspoň víme, že umíš střílet!\"", tags: ["fotbal","sport","trenér","gól"] },
+            { setup: "Co má fotbalista a pytel cementu společného?", punchline: "Oba se ztvrdnou na hřišti.", tags: ["fotbal","sport","hřiště"] },
+            { setup: "Jaký je nejhorší sport pro lenochoda?", punchline: "Rychlobruslení.", tags: ["sport","lenochod","rychlobruslení"] },
+
+            // === POČÍTAČE / TECHNIKA ===
+            { setup: "Proč programátor vždycky nosí brýle?", punchline: "Protože nevidí C# (céčko)!", tags: ["počítač","programátor","brýle"] },
+            { setup: "Jak pozná programátor, že je na WC?", punchline: "Má před sebou okno a nic nefunguje.", tags: ["počítač","programátor","wc","okno"] },
+            { setup: "Kolik programátorů je potřeba k výměně žárovky?", punchline: "Žádný. To je hardwarový problém.", tags: ["počítač","programátor","žárovka","hardware"] },
+            { setup: "Proč se počítače nikdy nenastydnou?", punchline: "Protože mají dobrý Windows (okna).", tags: ["počítač","windows","okno"] },
+            { setup: "Potkají se dva počítače:\n„Jak se máš?\"", punchline: "„Ujde to, akorát mám virózu.\"", tags: ["počítač","virus","nemoc"] },
+            { setup: "Co dělá myš, když se rozbije klávesnice?", punchline: "Zavolá krysu.", tags: ["počítač","myš","klávesnice","krysa"] },
+            { setup: "Proč má internet pavouk?", punchline: "Protože je web-master.", tags: ["počítač","internet","pavouk","web"] },
+
+            // === JÍDLO ===
+            { setup: "Co řekne rohlík housce?", punchline: "„Nezdravíš svou babičku?\"", tags: ["jídlo","rohlík","houska","babička"] },
+            { setup: "Proč jsou banány šťastné?", punchline: "Protože se nikdy nedohadují – vždycky se zohýbají.", tags: ["jídlo","ovoce","banán"] },
+            { setup: "Co dělá rajče v posilovně?", punchline: "Kečup-y (ketchup = catch up).", tags: ["jídlo","rajče","posilovna","kečup"] },
+            { setup: "Potkají se dvě vejce:\n„Kam jdeš?\"\n„Na vycházku.\"", punchline: "„Tak se neztvrd.\"", tags: ["jídlo","vejce","vycházka"] },
+            { setup: "Co je nejhorší noční můra okurky?", punchline: "Když ji dají do nálevu.", tags: ["jídlo","okurka","nálev"] },
+            { setup: "Proč se bramborám říká brambory?", punchline: "Protože když je kopneš, tak bram-bouřou.", tags: ["jídlo","brambory"] },
+            { setup: "Co je kulaté a dělá „hop hop\"?", punchline: "Pizza na trampolíně.", tags: ["jídlo","pizza","trampolína"] },
+
+            // === RODINA / DĚTI ===
+            { setup: "Maminka volá na Honzíka:\n„Honzíku, okamžitě pojď dolů!\"\n„Ale mami, já spadnu ze stromu!\"", punchline: "„Tak proto mám pojď dolů!\"", tags: ["rodina","maminka","strom"] },
+            { setup: "Synek se ptá táty:\n„Tati, proč má žirafa tak dlouhý krk?\"\nTáta: „Protože jí smrdí nohy.\"", punchline: "Synek: „Aha, jako strejda.\"", tags: ["rodina","tatínek","táta","žirafa","strejda"] },
+            { setup: "„Mami, můžu si pustit počítač?\"\n„Jen když uděláš úkoly.\"", punchline: "„Tak si ho radši nepustím, úkol je delší.\"", tags: ["rodina","maminka","počítač","úkol","škola"] },
+            { setup: "Babička se ptá vnuka:\n„Tomášku, co chceš k svačině?\"", punchline: "„Babi, chtěl bych cokoliv, co není polévka!\"", tags: ["rodina","babička","svačina","polévka"] },
+
+            // === DOKTOR ===
+            { setup: "Přijde pacient k doktorovi:\n„Pane doktore, nikdo mě nebere vážně.\"", punchline: "Doktor: „Děláte si srandu, že jo?\"", tags: ["doktor","pacient","lékař"] },
+            { setup: "„Pane doktore, cítím se jako závěs.\"", punchline: "„Tak se prostě sebereš a vyvěsíš!\"", tags: ["doktor","závěs","lékař"] },
+            { setup: "„Pane doktore, pořád mám pocit, že jsem neviditelný.\"", punchline: "Doktor: „Kdo to řekl?\"", tags: ["doktor","neviditelný","lékař"] },
+            { setup: "„Pane doktore, mám pocit, že jsem pes.\"\n„A jak dlouho to trvá?\"", punchline: "„Odmalička, ještě jako štěně.\"", tags: ["doktor","pes","štěně","lékař"] },
+
+            // === BLONDÝNY / HLOUPOST ===
+            { setup: "Jak poznáš, že je na počítači blondýna?", punchline: "Je po klávesnici rozlité Tipp-Ex.", tags: ["blondýna","počítač","klávesnice"] },
+            { setup: "Proč nosí blondýna láhev šamponu do sprchy?", punchline: "Protože na lahvi je napsáno „pro suché vlasy\".", tags: ["blondýna","šampon","sprcha","vlasy"] },
+
+            // === POHÁDKY / FANTASY ===
+            { setup: "Co řekne Červená karkulka vlkovi?", punchline: "„Babi, proč máš takovou velkou messenger ikonu?\"", tags: ["pohádka","karkulka","vlk","babička"] },
+            { setup: "Co dělá drak na dietě?", punchline: "Grilované princezny bez příloh.", tags: ["pohádka","drak","dieta","princezna"] },
+            { setup: "Proč princezna neudělala úkoly?", punchline: "Čekala sto let, až ji někdo probudí.", tags: ["pohádka","princezna","úkol","škola"] },
+
+            // === RÁDIO / HÁDANKY ===
+            { setup: "Co je to: Má to nohy, ale nemůže to chodit?", punchline: "Stůl!", tags: ["hádanka","stůl"] },
+            { setup: "Co je to: Čím víc toho máš, tím míň to vidíš?", punchline: "Tma.", tags: ["hádanka","tma"] },
+            { setup: "Co má oči, ale nevidí?", punchline: "Brambora!", tags: ["hádanka","brambora","oči"] },
+            { setup: "Co je to: stojí to ve dveřích, ale nejde to otevřít?", punchline: "Písmeno „e\" ve slově „dveře\".", tags: ["hádanka","dveře","písmeno"] },
+
+            // === VŠEOBECNÉ / ABSURD ===
+            { setup: "Proč duchové nelžou?", punchline: "Protože je skrz ně všechno vidět.", tags: ["duch","strašidlo"] },
+            { setup: "Proč kostlivec nešel na párty?", punchline: "Neměl s kým, všechny jeho kamarády snědl pes.", tags: ["kostlivec","párty","pes"] },
+            { setup: "Co dělá sněhulák na dovolené?", punchline: "Taje si tam dobře.", tags: ["sněhulák","dovolená","zima"] },
+            { setup: "Jak se řekne lenochod anglicky?", punchline: "Slowly...", tags: ["lenochod","angličtina"] },
+            { setup: "Proč pirát nechodí do banky?", punchline: "Protože má vlastní „Arr-count\".", tags: ["pirát","banka","angličtina"] },
+            { setup: "Co si řekne dvě nuly, když se potkají?", punchline: "„Ahoj, ale osmičko!\"", tags: ["číslo","nula","matematika"] },
+            { setup: "Proč rybář nikdy nelže?", punchline: "Protože by se mu prodloužily ryby.", tags: ["rybář","ryba","lež"] },
+            { setup: "Co řekne jedna zeď druhé?", punchline: "„Sejdeme se na rohu!\"", tags: ["zeď","roh"] },
+            { setup: "Proč banán chodil k doktorovi?", punchline: "Protože se mu loupala kůra.", tags: ["jídlo","banán","doktor"] },
+
+            // === PEPÍČEK (pokračování) ===
+            { setup: "Paní učitelka: „Pepíčku, řekni větu se slovem 'byl'.\"", punchline: "„Paní učitelko, dnes to jen tak nebyl.\"", tags: ["pepíček","škola","čeština","učitelka"] },
+            { setup: "„Pepíčku, proč jsi měl včera ve škole dvě jedničky?\"", punchline: "„Jedna byla z chování.\"", tags: ["pepíček","škola","jednička"] },
+            { setup: "„Pepíčku, víš, co je to osobní zájmeno?\"", punchline: "„Jo, to je, když mě babička vezme na zmrzlinu.\"", tags: ["pepíček","škola","čeština","babička","zmrzlina"] },
+            { setup: "„Pepíčku, kdybys měl 10 korun a utratil 5, co bys měl?\"", punchline: "„Dluh!\"", tags: ["pepíček","škola","matematika","peníze"] },
+            { setup: "„Pepíčku, vyjmenuj mi řeky, které znáš.\"\nPepíček: „Ř, Ř, Ř...\"\n„Pepíčku, řeku, ne písmeno!\"", punchline: "„Aha, paní učitelko... Labe, Vltava, Morava, Oregon...\"", tags: ["pepíček","škola","zeměpis","řeka"] },
+            { setup: "Tatínek: „Pepíčku, co budeš dělat, až budeš velký?\"", punchline: "„Velký jídlo.\"", tags: ["pepíček","tatínek","táta","jídlo"] },
+            { setup: "„Pepíčku, jak se jmenuje tvůj pes?\"\n„Pepíček.\"\n„Stejně jako ty?\"", punchline: "„Jo, protože když mamka křikne 'Pepíčku, pojď sem!', přijdeme oba.\"", tags: ["pepíček","pes","maminka"] },
+            { setup: "Paní učitelka: „Pepíčku, doplň: Běžím jako...\"", punchline: "„...když mi maminka řekne, ať jdu vynést koš.\"", tags: ["pepíček","škola","maminka","koš"] },
+            { setup: "„Pepíčku, co jsi dělal o prázdninách?\"\n„Nic, paní učitelko.\"\n„A co jsi si zapsal?\"", punchline: "„Ze všech sil.\"", tags: ["pepíček","škola","prázdniny","učitelka"] },
+            { setup: "Pepíček přijde ze školy: „Mami, dneska jsem byl jediný, kdo uměl odpovědět!\"\n„A na co se paní učitelka ptala?\"", punchline: "„Kdo rozbil okno.\"", tags: ["pepíček","škola","maminka","okno"] },
+            { setup: "„Pepíčku, proč máš rád zimu?\"\n„Protože nemusím do školy.\"\n„Ale v zimě přece škola je!\"", punchline: "„Já vím, ale mě omlouvá nemoc.\"", tags: ["pepíček","škola","zima","nemoc"] },
+            { setup: "„Pepíčku, jak se řekne anglicky 'nic'?\"\n„Nothing.\"\n„Správně! A česky?\"", punchline: "„Prázdniny.\"", tags: ["pepíček","škola","angličtina","prázdniny"] },
+            { setup: "Paní učitelka: „Pepíčku, napiš na tabuli slovo 'diktafon'.\"\nPepíček napíše.\n„Máš tam chybu.\"", punchline: "„Ale paní učitelko, vy jste mi to nadiktovala!\"", tags: ["pepíček","škola","čeština","tabule"] },
+            { setup: "„Pepíčku, co víš o rovníku?\"\n„Je to imaginární čára okolo Země.\"\n„A co ještě?\"", punchline: "„A nedá se na něj přivázat prádlo.\"", tags: ["pepíček","škola","zeměpis","rovník"] },
+            { setup: "„Pepíčku, kolik je tvůj otec starý?\"\n„Tolik, kolik já.\"\n„Jak to?\"", punchline: "„Stal se tátou, když jsem se narodil.\"", tags: ["pepíček","tatínek","táta","věk"] },
+            { setup: "Paní učitelka: „Pepíčku, kolik je dvě plus dvě?\"\n„Přibližně čtyři.\"\n„Přibližně? Pepíčku, to je přesně čtyři!\"", punchline: "„Tak proč se mě ptáte, když to víte?\"", tags: ["pepíček","škola","matematika"] },
+            { setup: "„Pepíčku, kdo ti pomáhal s domácím úkolem?\"", punchline: "„Nikdo, paní učitelko. Udělal jsem ho sám, přestože táta chtěl pomoct.\"", tags: ["pepíček","škola","úkol","tatínek","táta"] },
+            { setup: "Paní učitelka: „Pepíčku, jak se jmenuje manželka vola?\"\nPepíček: „Vůlice.\"\n„To ne, kráva.\"", punchline: "„Aha, a to je manžel, nebo manželka?\"", tags: ["pepíček","škola","zvíře","kráva"] },
+            { setup: "„Pepíčku, proč jsi utíkal ze školy?\"", punchline: "„Protože mi paní učitelka řekla, že mám opakovat.\"", tags: ["pepíček","škola","útěk"] },
+            { setup: "Tatínek Pepíčkovi: „Nemaluj na zeď, Pepíčku!\"", punchline: "„Tak mi koupíš jinou?\"", tags: ["pepíček","tatínek","táta","zeď","malování"] },
+            { setup: "„Pepíčku, proč jsi dnes ráno zkontroloval teploměr?\"", punchline: "„Abych věděl, jestli se mi vyplatí jít do školy.\"", tags: ["pepíček","škola","teploměr","nemoc"] },
+            { setup: "Paní učitelka: „Pepíčku, kolik je pět minus pět?\"\nPepíček mlčí.\n„No tak, kolik to je?\"", punchline: "„Paní učitelko, já nevím. Když tam nic není, jak to mám spočítat?\"", tags: ["pepíček","škola","matematika"] },
+            { setup: "„Pepíčku, máš ve slohu tolik chyb, kolik hlav má drak.\"\n„A kolik hlav má drak?\"", punchline: "„V tvé slohovce tři.\"", tags: ["pepíček","škola","sloh","drak"] },
+            { setup: "Paní učitelka: „Pepíčku, jestli máš jedno jablko a dám ti další dvě, kolik budeš mít jablek?\"", punchline: "„Tři, ale nechci tři, chci hrušku.\"", tags: ["pepíček","škola","matematika","jablko","hruška"] },
+            { setup: "„Pepíčku, co víš o Karlu IV.?\"\n„Umřel.\"\n„A co víš o Rudolfu II.?\"\n„Taky umřel.\"\n„A o Václavu IV.?\"", punchline: "„Ten ještě přijde.\"", tags: ["pepíček","škola","dějepis","historie"] },
+
+            // === ŠKOLA (pokračování) ===
+            { setup: "„Žáci, napište slohovou práci na téma Moje rodina.\"\nŽák: „A můžu napsat jen o sobě?\"\n„Proč?\"", punchline: "„Ostatní mi lezou na nervy.\"", tags: ["škola","sloh","rodina"] },
+            { setup: "Učitel tělocviku: „Proč se nehýbeš?\"", punchline: "„Pane učiteli, spořím energii.\"", tags: ["škola","tělocvik","učitel"] },
+            { setup: "Paní učitelka: „Kdo mi ukáže Česko na mapě?\"\nHonzík ukáže.\n„Výborně. A kdo řekne, jak se jmenuje hlavní město?\"", punchline: "Třída: „Honzík!\"", tags: ["škola","zeměpis","praha"] },
+            { setup: "Ředitel: „Proč máš v žákovské tolik poznámek?\"", punchline: "„Protože jsem pilný, pane řediteli!\"", tags: ["škola","ředitel","poznámka","žákovská"] },
+            { setup: "„Maruško, proč jsi zas přišla pozdě?\"", punchline: "„Paní učitelko, na chodbě bylo napsáno 'Pozor, malováno!' a já jsem se zastavila.\"", tags: ["škola","učitelka","pozdě"] },
+            { setup: "„Které je tvůj nejoblíbenější předmět ve škole?\"", punchline: "„Přestávka.\"", tags: ["škola","předmět","přestávka"] },
+            { setup: "„Která kniha je nejvíc strašidelná?\"", punchline: "„Učebnice matematiky.\"", tags: ["škola","kniha","matematika"] },
+            { setup: "„Proč chodíš do školy?\"", punchline: "„Protože domů bych nedošel.\"", tags: ["škola","cesta"] },
+            { setup: "Žák v testu. Otázka: Co víš o zemské přitažlivosti?", punchline: "Odpověď: „Díky ní padám jenom dolů, ne taky vzhůru.\"", tags: ["škola","test","fyzika","gravitace"] },
+            { setup: "Chemikář: „Jak se nazývá látka H2O?\"\nŽák: „Voda.\"\n„A CO2?\"\n„Oxid uhličitý.\"\n„A K2R?\"", punchline: "„Kadeřník?\"", tags: ["škola","chemie","voda","kadeřník"] },
+            { setup: "Paní učitelka rodičům: „Váš Jirka má velmi bohatou fantazii.\"\nTatínek: „A kvůli čemu?\"", punchline: "„Napsal slohovku s názvem 'Můj pes'. Ale vy přece nemáte psa.\"", tags: ["škola","sloh","pes","rodiče"] },
+            { setup: "Žákyně u tabule: „Paní učitelko, nevím.\"\nUčitelka: „Tak si představ, že je to test.\"", punchline: "„V tom případě vím, akorát bych si chtěla opsat od sousedky.\"", tags: ["škola","test","tabule","učitelka"] },
+            { setup: "Paní učitelka: „Za co jsi dostal dvojku?\"\nŽák: „Za chování.\"\n„A co jsi udělal?\"", punchline: "„Nic. A to bylo právě špatně, měl jsem dávat pozor.\"", tags: ["škola","chování","dvojka"] },
+            { setup: "Učitel matematiky: „Jeden pracovník vykope jámu za 4 hodiny. Za kolik ji vykopou dva?\"\nŽák: „Za 2 hodiny.\"\n„A deset?\"", punchline: "„Jáma už bude vykopaná, tak nikdy.\"", tags: ["škola","matematika","učitel"] },
+            { setup: "Žák paní učitelce: „Musím si jít odskočit.\"\n„Nemůžeš počkat do přestávky?\"", punchline: "„Ne, paní učitelko, moje tělo nemá rozvrh hodin.\"", tags: ["škola","učitelka","přestávka"] },
+            { setup: "„Proč se díváš do žákovské, jestli máš poznámku?\"", punchline: "„Abych věděl, jak se doma tvářit.\"", tags: ["škola","žákovská","poznámka"] },
+            { setup: "Paní učitelka: „Kdo mi poví, co je to zázrak?\"\nŽák: „Když dostanu z matiky jedničku.\"", punchline: "Učitelka: „Nikoliv, to je spíš sen.\"", tags: ["škola","matematika","zázrak","jednička"] },
+            { setup: "Žáček tatínkovi: „Tati, ve škole nás učili o antice.\"\n„A co jsi se naučil?\"", punchline: "„Že už je to dávno, tak si to mamka už nepamatuje.\"", tags: ["škola","dějepis","antika","tatínek"] },
+            { setup: "Učitel: „Dnes si napíšeme diktát.\"\nŽák: „A zítra?\"", punchline: "„Zítra si ho opravíme.\"", tags: ["škola","diktát","čeština"] },
+            { setup: "„Pane učiteli, proč máte žákovskou mrtvolu?\"\n„Vy naschvál nechcete vyslovit 'elektřina'?\"", punchline: "„Promiňte, já jsem myslel ten plyšový kostlivec v rohu.\"", tags: ["škola","učitel","fyzika"] },
+
+            // === ZVÍŘATA (pokračování) ===
+            { setup: "Přijde kočka do obchodu: „Prosím myš.\"\n„Živou, nebo mrtvou?\"", punchline: "„To je fuk, stejně si ji zabiju.\"", tags: ["zvíře","kočka","myš","obchod"] },
+            { setup: "Proč slon nehraje fotbal?", punchline: "Protože má moc velké míče u nohou.", tags: ["zvíře","slon","fotbal","sport"] },
+            { setup: "Co dělá kapr o Vánocích?", punchline: "Plave ve vaně a čeká.", tags: ["zvíře","ryba","kapr","vánoce"] },
+            { setup: "Co je to? Černé, bílé, červené?", punchline: "Zebra, která se uhodila.", tags: ["zvíře","zebra","hádanka"] },
+            { setup: "Co dělá koza na střeše?", punchline: "Drží se, aby nespadla.", tags: ["zvíře","koza","střecha"] },
+            { setup: "Proč jsou kraby neochotní?", punchline: "Protože chodí pořád stranou.", tags: ["zvíře","krab"] },
+            { setup: "Co řekne ryba, když narazí do zdi?", punchline: "„Dam!\"", tags: ["zvíře","ryba","zeď"] },
+            { setup: "Co dělá pavouk na internetu?", punchline: "Lovuje chyby.", tags: ["zvíře","pavouk","internet","počítač"] },
+            { setup: "Dva šneci na silnici: „Pospěš, za chvíli pojede auto!\"", punchline: "„Pospíchám, už 20 minut!\"", tags: ["zvíře","šnek","auto","silnice"] },
+            { setup: "Co dělá medvěd v zimě?", punchline: "Sní o medu.", tags: ["zvíře","medvěd","zima","med"] },
+            { setup: "Jaký je rozdíl mezi kobylkou a kobylou?", punchline: "Velikost. A kobylka má křídla.", tags: ["zvíře","kobylka","kůň"] },
+            { setup: "Přijde kohout do baru: „Jedno pivo.\"\nBarman: „Vás neobsloužím.\"\n„Proč?\"", punchline: "„Protože brzo ráno pořád kokrháte a hosté si stěžují.\"", tags: ["zvíře","kohout","bar"] },
+            { setup: "Co dělá králík v knihovně?", punchline: "Čte knížku o králi.", tags: ["zvíře","králík","knihovna"] },
+            { setup: "Proč žáby nepijí kafe?", punchline: "Protože jim z toho skáčou tepny.", tags: ["zvíře","žába","káva"] },
+            { setup: "Co dělá ježek v prádelně?", punchline: "Čistí si bodliny.", tags: ["zvíře","ježek","prádelna"] },
+            { setup: "Jak nazveš rybu bez očí?", punchline: "Ryba... psssst... nic.", tags: ["zvíře","ryba"] },
+            { setup: "Proč ptáci letí na jih na zimu?", punchline: "Protože pěšky by to bylo moc daleko.", tags: ["zvíře","pták","zima","jih"] },
+            { setup: "Co dělá myš, když vidí slona?", punchline: "Utíká. A slon taky — před pavoukem.", tags: ["zvíře","myš","slon","pavouk"] },
+            { setup: "Potkají se dvě kočky: „Haf!\"\n„Ty ses zbláznila?!\"", punchline: "„Musím se učit cizí jazyky.\"", tags: ["zvíře","kočka","pes","jazyk"] },
+            { setup: "Proč medvěd nemá wifi?", punchline: "Protože je v lese, kde má slabý signál.", tags: ["zvíře","medvěd","wifi","internet","les"] },
+            { setup: "Co udělá pes, když mu ukradnou kost?", punchline: "Začne si stěžovat, ale nikdo mu nerozumí.", tags: ["zvíře","pes","kost"] },
+            { setup: "Jak se pozná sova bez peří?", punchline: "Podle pohrdavého pohledu.", tags: ["zvíře","sova"] },
+            { setup: "Proč kocour nosí kravatu?", punchline: "Protože jde na myší pohřeb.", tags: ["zvíře","kocour","myš","kravata"] },
+            { setup: "Co dělá tučňák v teplém oblečení?", punchline: "Mučí se.", tags: ["zvíře","tučňák","oblečení"] },
+            { setup: "Proč jsou velbloudi vytrvalí?", punchline: "Protože nesou na hřbetě celou zásobu pití.", tags: ["zvíře","velbloud","poušť"] },
+
+            // === FOTBAL / SPORT (pokračování) ===
+            { setup: "Proč fotbalisté mají špatnou paměť?", punchline: "Protože pořád jenom hlavičkují.", tags: ["fotbal","sport","hlavička"] },
+            { setup: "Trenér hráči: „Proč jsi nedal penaltu?\"", punchline: "„Brankář mi fandil, nechtěl jsem ho zklamat.\"", tags: ["fotbal","sport","trenér","penalta","brankář"] },
+            { setup: "„Jaký sport ovládáš?\"\n„Extrémní.\"\n„Jaký přesně?\"", punchline: "„Vstávání v pondělí ráno.\"", tags: ["sport","pondělí","vstávání"] },
+            { setup: "Jak se pozná špatný brankář?", punchline: "Z jeho strany sítě je vždycky víc gólů než z druhé.", tags: ["fotbal","sport","brankář","gól"] },
+            { setup: "Dva fotbalisté: „Co dělá tvůj trenér?\"\n„Spí.\"\n„A v práci?\"", punchline: "„Taky spí, ale má u toho otevřené oči.\"", tags: ["fotbal","sport","trenér","spánek"] },
+            { setup: "„Co dělá fotbalista, když prohraje?\"", punchline: "„Vysvětluje to své mamce.\"", tags: ["fotbal","sport","prohra","maminka"] },
+            { setup: "Proč brankáři neumějí matematiku?", punchline: "Protože pokaždé, když mají spočítat góly, zapomínají ty svoje.", tags: ["fotbal","sport","brankář","matematika"] },
+            { setup: "Učitel tělocviku: „Proč sis nevzal trenky?\"", punchline: "„Pane učiteli, cvičíme tak málo, že nemá cenu se převlékat.\"", tags: ["sport","tělocvik","trenky","učitel"] },
+            { setup: "Jaký je nejlepší sport pro líné lidi?", punchline: "Šachy. Stačí chytit koně za hřívu.", tags: ["sport","šachy","líný"] },
+            { setup: "Fanoušek volá na hráče: „Nemáš tam nohu!\"\nHráč: „Mám, já ji jenom neumím použít!\"", punchline: "", tags: ["fotbal","sport","fanoušek"] },
+
+            // === POČÍTAČE / TECHNIKA (pokračování) ===
+            { setup: "Jak zjistíš, že je počítač starý?", punchline: "Má myš, která chodí jenom na čtyřech nohách.", tags: ["počítač","myš","stáří"] },
+            { setup: "Co dělá programátor v lese?", punchline: "Hledá Wi-Fi.", tags: ["počítač","programátor","les","wifi"] },
+            { setup: "Proč programátoři spletou Vánoce s Halloweenem?", punchline: "Protože OCT 31 = DEC 25 (v různých soustavách).", tags: ["počítač","programátor","vánoce","halloween"] },
+            { setup: "Co řekne počítač, když je smutný?", punchline: "„Jsem offline. Prosím, nerestartujte mě.\"", tags: ["počítač","smutek"] },
+            { setup: "Co je to: má to spoustu oken, ale nikdy neprší uvnitř?", punchline: "Windows.", tags: ["počítač","windows","okno","hádanka"] },
+            { setup: "Potkají se dvě myši u klávesnice: „Neviděla jsi mého bratra?\"", punchline: "„Ne, ale viděla jsem CTRL.\"", tags: ["počítač","myš","klávesnice"] },
+            { setup: "Programátor říká manželce: „Zaběhnu do obchodu, co chceš?\"\n„Chleba, a když budou vajíčka, kup 6.\"\nVrátí se se 6 chleby.\n„Proč 6?\"", punchline: "„Byla vajíčka.\"", tags: ["počítač","programátor","chleba","vajíčka"] },
+            { setup: "Jak programátor pozná, že je ráno?", punchline: "Monitor bliká, kafe nedělá.", tags: ["počítač","programátor","ráno","káva"] },
+            { setup: "Proč mají počítače rády studené počasí?", punchline: "Protože se nepřehřejou.", tags: ["počítač","zima"] },
+            { setup: "Co dělá hacker o prázdninách?", punchline: "Hackuje počasí – pořád mu svítí slunce.", tags: ["počítač","hacker","prázdniny","slunce"] },
+
+            // === JÍDLO (pokračování) ===
+            { setup: "Co řekne sýr mléku?", punchline: "„Ty mě zrálo, já ti to nezapomenu!\"", tags: ["jídlo","sýr","mléko"] },
+            { setup: "Proč okurka smrdí?", punchline: "Protože se kamarádí jen se zelím.", tags: ["jídlo","okurka","zelí"] },
+            { setup: "Co řekne pizza jiné pizze v troubě?", punchline: "„Ale jsi dnes horká!\"", tags: ["jídlo","pizza","trouba"] },
+            { setup: "Co dělá hruška na hodině matematiky?", punchline: "Počítá si seménka.", tags: ["jídlo","hruška","matematika","škola"] },
+            { setup: "Potkají se dvě vejce v koši: „Víš, co je to omeleta?\"", punchline: "„Nevím, ale radši bych na to nechtěl přijít.\"", tags: ["jídlo","vejce","omeleta"] },
+            { setup: "Co dělá káva v posteli?", punchline: "Probouzí se.", tags: ["jídlo","káva","postel"] },
+            { setup: "Proč meloun neuteče?", punchline: "Protože má slabost pro vodu.", tags: ["jídlo","meloun","voda"] },
+            { setup: "Jak se jmenuje sušenka, která umí zpívat?", punchline: "Pop-cake.", tags: ["jídlo","sušenka","zpěv"] },
+            { setup: "Proč banán chodil dlouho?", punchline: "Protože se bál, že se uklouzne po sobě samém.", tags: ["jídlo","banán"] },
+            { setup: "Co řekne chleba másle?", punchline: "„Pomaž se, jdeme do snídaně!\"", tags: ["jídlo","chleba","máslo","snídaně"] },
+            { setup: "Proč jsou brambory šťastné?", punchline: "Protože mají tolik očí, že vidí svět z každé strany.", tags: ["jídlo","brambory","oči"] },
+            { setup: "Co dělá hot dog na pláži?", punchline: "Opaluje se, aby byl ještě víc do červena.", tags: ["jídlo","hotdog","pláž"] },
+
+            // === RODINA (pokračování) ===
+            { setup: "Malý Tomáš: „Babi, proč máš vrásky?\"\n„Protože mám bohaté zkušenosti.\"", punchline: "„A proč máš jen jednu zkušenost na líci?\"", tags: ["rodina","babička","vrásky"] },
+            { setup: "Táta synovi: „Až budu starý, naučím tě všechno, co umím.\"\nSyn: „A co?\"", punchline: "„Mlčet.\"", tags: ["rodina","tatínek","táta","syn"] },
+            { setup: "„Tati, narodil jsem se v Praze?\"", punchline: "„Ne, synku, v porodnici.\"", tags: ["rodina","tatínek","praha","narození"] },
+            { setup: "Maminka: „Pepíčku, řekni pravdu, kdo rozbil okno?\"", punchline: "„Nevím, ale míč tam zůstal.\"", tags: ["rodina","maminka","okno","míč"] },
+            { setup: "„Babi, mají andělé křídla?\"\n„Ano, zlatíčko.\"\n„A démoni?\"\n„Ti mají taky.\"", punchline: "„A lidi?\"\n„Ne, ale mají boty.\"", tags: ["rodina","babička","anděl"] },
+            { setup: "Táta synovi: „Když jsem byl v tvém věku, chodil jsem 5 km do školy pěšky.\"", punchline: "Syn: „Ale tati, dneska máme auta. Tak to trénuješ na důchod?\"", tags: ["rodina","tatínek","škola","auto"] },
+            { setup: "Babička Tomáškovi: „Buď hodný.\"", punchline: "„Babi, já jsem hodný — jenom ne, když se někdo dívá.\"", tags: ["rodina","babička"] },
+            { setup: "Táta synovi: „Až vyrosteš, budeš chtít být jako já.\"", punchline: "„Ne, tati, já chci být šťastný.\"", tags: ["rodina","tatínek","syn"] },
+            { setup: "Sestra bratrovi: „Proč se nikdy nesmíváš?\"\n„Ty se nesmíváš.\"\n„Ale já jsem se dneska smála dvakrát!\"", punchline: "„Kdy?\"\n„Když jsi spadl. A když ses neuměl zvednout.\"", tags: ["rodina","sestra","bratr"] },
+            { setup: "Maminka Anetce: „Proč jsi tak špinavá?\"\n„Byla jsem v bahně.\"\n„A proč v bahně?\"", punchline: "„Protože jsi mi zakázala jít na ulici.\"", tags: ["rodina","maminka","bahno","ulice"] },
+            { setup: "Táta: „Synu, když uklidíš pokoj, dostaneš kapesné.\"\nSyn: „A když ho neuklidím?\"", punchline: "„Nedostaneš nic.\"\n„Tak to vyjde skoro nastejno.\"", tags: ["rodina","tatínek","pokoj","kapesné"] },
+            { setup: "Malý Honzík mamince: „Mami, můžu si pustit televizi?\"\n„Když uděláš úkoly.\"", punchline: "„Tak raději televizi nezapnu, úkoly jsou delší.\"", tags: ["rodina","maminka","televize","úkol"] },
+            { setup: "Dcera mámě: „Mami, mám nápad!\"\n„Jaký?\"", punchline: "„Nevím, už jsem ho zapomněla.\"", tags: ["rodina","maminka","dcera","nápad"] },
+            { setup: "Synek se ptá: „Tati, proč má žirafa tak dlouhý krk?\"\n„Aby jí nesmrděly nohy.\"", punchline: "„Aha, jako strejdovi.\"", tags: ["rodina","tatínek","žirafa","strejda"] },
+
+            // === DOKTOR (pokračování) ===
+            { setup: "„Pane doktore, bojím se, že jsem housenka.\"", punchline: "„Nebojte, za chvíli se vylíhnete a bude vám líp.\"", tags: ["doktor","housenka","lékař"] },
+            { setup: "„Pane doktore, pořád slyším píseň Jingle Bells.\"", punchline: "„To je vánoční syndrom. Přejde v lednu.\"", tags: ["doktor","vánoce","hudba"] },
+            { setup: "„Pane doktore, mám pocit, že jsem neviditelný.\"", punchline: "„Další, prosím!\"", tags: ["doktor","neviditelný"] },
+            { setup: "„Pane doktore, mé srdce bije strašně rychle.\"\n„Kolik?\"", punchline: "„Nevím, neumím počítat tak rychle.\"", tags: ["doktor","srdce"] },
+            { setup: "„Pane doktore, bojím se vody.\"", punchline: "„Tak pijte čaj.\"", tags: ["doktor","voda","čaj"] },
+            { setup: "„Pane doktore, pořád ztrácím paměť.\"\n„A kdy to začalo?\"", punchline: "„Co začalo?\"", tags: ["doktor","paměť"] },
+            { setup: "Pacient: „Pane doktore, doporučil jste mi, abych denně chodil 10 km.\"\nDoktor: „A jak to jde?\"", punchline: "„Jsem už v Německu, jak mám zpátky?\"", tags: ["doktor","chůze","německo"] },
+            { setup: "„Pane doktore, měl jsem sen, že jsem dveře.\"\n„A pak?\"", punchline: "„Zaklepal někdo a já se probudil.\"", tags: ["doktor","sen","dveře"] },
+            { setup: "„Pane doktore, kolikrát denně mám brát ty prášky?\"\n„Desetkrát.\"\n„To je dost!\"", punchline: "„Ale po jednom, ne najednou.\"", tags: ["doktor","prášky","léky"] },
+            { setup: "Zubař pacientovi: „Neboj, bude to rychlé.\"", punchline: "„Ale pane doktore, vy jste mi odskočil k paláci Vězně!\"", tags: ["doktor","zubař","zub"] },
+            { setup: "„Pane doktore, mám nohu kratší!\"\n„Obě?\"\n„Ne, jen jednu!\"", punchline: "„Tak se odskočte, druhá to vyrovná.\"", tags: ["doktor","noha"] },
+            { setup: "Pacient: „Pane doktore, všichni mě ignorují.\"", punchline: "Doktor: „Další!\"", tags: ["doktor","ignorace"] },
+            { setup: "„Pane doktore, pořád si myslím, že jsem pes.\"\n„A jak dlouho?\"", punchline: "„Odmalička, ještě jako štěně.\"", tags: ["doktor","pes","štěně"] },
+            { setup: "„Pane doktore, nespím.\"\n„Počítejte ovečky.\"", punchline: "„Jsem pastevec, znám je všechny jménem a některé mi teď chybí.\"", tags: ["doktor","spánek","ovce"] },
+
+            // === BLONDÝNY (pokračování) ===
+            { setup: "Proč blondýna nosí knihy do sprchy?", punchline: "Aby měla vzdělání z první ruky (i mokré).", tags: ["blondýna","kniha","sprcha"] },
+            { setup: "Blondýna v obchodě: „Jeden rohlík a dva losy.\"\n„Proč dva losy?\"", punchline: "„Aby aspoň jeden vyhrál.\"", tags: ["blondýna","rohlík","los"] },
+            { setup: "Proč blondýna nosí stopky do supermarketu?", punchline: "Aby věděla, jak dlouho se dívá na jogurty.", tags: ["blondýna","supermarket","jogurt"] },
+            { setup: "Blondýna na dovolené: „Ten hotel měl pět hvězdiček!\"\n„A jaký byl?\"", punchline: "„Jedna padala každou noc.\"", tags: ["blondýna","hotel","dovolená"] },
+            { setup: "Blondýna v optice: „Prosím brýle.\"\n„Jaké?\"\n„Obyčejné.\"\n„Pro čtení?\"", punchline: "„Ne, na nohy.\"", tags: ["blondýna","brýle","optika"] },
+            { setup: "Blondýna na letišti: „Kolik trvá let do Paříže?\"\n„Okamžik...\"", punchline: "„Ach, to je rychlé!\"", tags: ["blondýna","letadlo","paříž"] },
+            { setup: "Blondýna v lékárně: „Prosím něco proti bolestem.\"\n„A co vás bolí?\"", punchline: "„Ještě nic, ale chci být připravená.\"", tags: ["blondýna","lékárna","bolest"] },
+            { setup: "Blondýna ve škole: „Napište všechno, co víte o Evropě.\"\nPo hodině odevzdá prázdný list.\n„Proč jste nepsala?\"", punchline: "„Napsala jsem všechno, co vím.\"", tags: ["blondýna","škola","evropa"] },
+            { setup: "Blondýna v jídelně: „Co je na oběd?\"\n„Rybí polévka.\"", punchline: "„S rybami, nebo bez?\"", tags: ["blondýna","jídelna","polévka","ryba"] },
+            { setup: "Jak zavolá blondýna hasiče?", punchline: "Řve z okna: „Hoří!\" — oni uslyší.", tags: ["blondýna","hasič","oheň"] },
+            { setup: "Blondýna u zubaře: „Vytrhněte mi zub nahoře vpravo.\"", punchline: "„Madam, ale ten zub už jste si vytrhla sama.\"", tags: ["blondýna","zubař","zub"] },
+            { setup: "Blondýna volá na IT: „Počítač mi nefunguje.\"\n„Zkontrolovala jste kabel?\"\n„Ano, je zapojený.\"\n„A obrazovka svítí?\"", punchline: "„Nevím, je tu tma, nejde elektřina.\"", tags: ["blondýna","počítač","it","elektřina"] },
+            { setup: "Blondýna: „Koupila jsem krátké jablko.\"\n„Krátké?\"", punchline: "„No jo, na obalu bylo 'extra malé'.\"", tags: ["blondýna","jablko","obchod"] },
+
+            // === POHÁDKY (pokračování) ===
+            { setup: "Co dělá Jeníček v perníkové chaloupce?", punchline: "Svačí zdi.", tags: ["pohádka","jeníček","chaloupka"] },
+            { setup: "Proč je Sněhurka nejhezčí?", punchline: "Protože se dívá do zrcadla, které jí lže.", tags: ["pohádka","sněhurka","zrcadlo"] },
+            { setup: "Co dělá princ, když políbí žábu a nic se nestane?", punchline: "Utře si pusu a jde domů.", tags: ["pohádka","princ","žába"] },
+            { setup: "Proč vlk nesnědl Karkulku hned na začátku?", punchline: "Chtěl napřed babičku — ta je starší a vyzrálejší.", tags: ["pohádka","vlk","karkulka","babička"] },
+            { setup: "Jaký je rozdíl mezi princeznou a drakem?", punchline: "Draka lze upéct.", tags: ["pohádka","princezna","drak"] },
+            { setup: "Co řekne Křemílek Vochomůrkovi v zimě?", punchline: "„Pozor, nenastydni, nebo půjdeš do polévky!\"", tags: ["pohádka","křemílek","vochomůrka","zima"] },
+            { setup: "Co bylo nejhorším nepřítelem Šípkové Růženky?", punchline: "Komáři během stoletého spánku.", tags: ["pohádka","růženka","komár"] },
+            { setup: "Proč nevaří Sněhurka?", punchline: "Trpaslíci pořád pracují a nikdo nemá čas jíst.", tags: ["pohádka","sněhurka","trpaslík"] },
+            { setup: "Co udělá drak, když mu spadne poslední hlava?", punchline: "Přestane se divit.", tags: ["pohádka","drak"] },
+            { setup: "Jak zachránila Sněhurka trpaslíky?", punchline: "Obráceně — oni zachránili ji.", tags: ["pohádka","sněhurka","trpaslík"] },
+            { setup: "Co dělá Popelka, když jí babička dá boty?", punchline: "Zjišťuje, jestli nejsou od sestry.", tags: ["pohádka","popelka","babička"] },
+            { setup: "Proč Paleček vážil tak málo?", punchline: "Protože byl lehkomyslný.", tags: ["pohádka","paleček"] },
+            { setup: "Co řekne Červená karkulka vlkovi v moderní verzi?", punchline: "„Babi, proč máš tak velkou profilovku?\"", tags: ["pohádka","karkulka","vlk","babička"] },
+
+            // === HÁDANKY (pokračování) ===
+            { setup: "Co to je: visí to, nikdo neví proč?", punchline: "Lampa.", tags: ["hádanka","lampa"] },
+            { setup: "Co to je: má nohy, ale neleze, má ruce, ale nevezme?", punchline: "Hodiny.", tags: ["hádanka","hodiny"] },
+            { setup: "Co je to: čím je mokřejší, tím lépe suší?", punchline: "Ručník.", tags: ["hádanka","ručník"] },
+            { setup: "Co je to: má to zrcátka, ale není to narcis?", punchline: "Auto.", tags: ["hádanka","auto","zrcátko"] },
+            { setup: "Co je to: chodí to bez nohou, jí bez úst, mluví bez jazyka?", punchline: "Počasí.", tags: ["hádanka","počasí"] },
+            { setup: "Co to je: má klávesy, ale nepíše?", punchline: "Klavír.", tags: ["hádanka","klavír"] },
+            { setup: "Co to je: má listy, ale nešumí?", punchline: "Kniha.", tags: ["hádanka","kniha"] },
+            { setup: "Co je to: čím víc toho bereš, tím víc je té díry?", punchline: "Díra.", tags: ["hádanka","díra"] },
+            { setup: "Co je to: má krk, ale nemluví, má tělo, ale nechodí, a vydává zvuk?", punchline: "Kytara.", tags: ["hádanka","kytara","hudba"] },
+            { setup: "Co to je: má tisíc očí, ale nevidí?", punchline: "Síto.", tags: ["hádanka","síto"] },
+            { setup: "Co to je: křičí bez úst, letí bez křídel?", punchline: "Vítr.", tags: ["hádanka","vítr"] },
+            { setup: "Co je to: bez křídel letí, bez rukou bije, bez nohou běží?", punchline: "Čas.", tags: ["hádanka","čas"] },
+            { setup: "Co to je: rodí se staré a umírá mladé?", punchline: "Plamen svíčky.", tags: ["hádanka","svíčka","plamen"] },
+            { setup: "Co je to: slepé, ale vede?", punchline: "Tužka.", tags: ["hádanka","tužka"] },
+            { setup: "Co to je: má to kříž, ale není to kříž?", punchline: "Dveře.", tags: ["hádanka","dveře"] },
+            { setup: "Co je to: když ti to spadne, neslyšíš to, ale cítíš?", punchline: "Kladivo na palec.", tags: ["hádanka","kladivo"] },
+            { setup: "Co to je: má to hlavu, ale nemá mozek?", punchline: "Špendlík.", tags: ["hádanka","špendlík"] },
+            { setup: "Co je to: chodí po střechách, nikdy nespadne?", punchline: "Komín.", tags: ["hádanka","komín","střecha"] },
+            { setup: "Co to je: první písmeno abecedy ve vodě?", punchline: "„A\" — když se topí.", tags: ["hádanka","písmeno","voda"] },
+            { setup: "Co je to: má to zuby, ale nekouše?", punchline: "Hřeben.", tags: ["hádanka","hřeben","zub"] },
+            { setup: "Co je to: visí na stromě, ale není ovoce?", punchline: "Ptačí budka.", tags: ["hádanka","strom","pták"] },
+            { setup: "Co to je: nemá nohy, ale chodí po vodě?", punchline: "Loď.", tags: ["hádanka","loď","voda"] },
+            { setup: "Co je to: má tvář, ale nekouká?", punchline: "Hodinky.", tags: ["hádanka","hodinky"] },
+            { setup: "Co to je: sedí na stromě, ale není pták?", punchline: "Kočka, co se zasekla.", tags: ["hádanka","kočka","strom"] },
+
+            // === ABSURDNÍ / MISC (pokračování) ===
+            { setup: "Proč je nebe modré?", punchline: "Protože kdyby bylo zelené, byla by to tráva.", tags: ["nebe","absurd"] },
+            { setup: "Proč pirát špatně uměl písmena?", punchline: "Celý život hledal X.", tags: ["pirát","písmeno"] },
+            { setup: "Proč sluníčko není červené?", punchline: "Protože se stydí jen chvíli večer.", tags: ["slunce","absurd"] },
+            { setup: "Proč měsíc v noci svítí?", punchline: "Protože ve dne spí.", tags: ["měsíc","noc"] },
+            { setup: "Co dělá strom, když mu padá list?", punchline: "Má podzimní prázdniny.", tags: ["strom","podzim","list"] },
+            { setup: "Co řekne oblak slunci?", punchline: "„Mohl bys uhnout? Zacláníš mi výhled.\"", tags: ["oblak","slunce"] },
+            { setup: "Proč je moře slané?", punchline: "Protože ryby pláčou.", tags: ["moře","ryba"] },
+            { setup: "Co je ze sněhuláka v létě?", punchline: "Tratoliště vody.", tags: ["sněhulák","léto","voda"] },
+            { setup: "Proč pirát neuměl abecedu?", punchline: "Pořád říkal jenom „Arrrr\".", tags: ["pirát","abeceda"] },
+            { setup: "Proč duchové nelžou?", punchline: "Protože je skrz ně všechno vidět.", tags: ["duch","strašidlo","lež"] },
+            { setup: "Proč kostlivec nešel na párty?", punchline: "Neměl s kým — kamarády mu sežral pes.", tags: ["kostlivec","párty","pes"] },
+            { setup: "Co dělá sněhulák na dovolené?", punchline: "Taje, ale užívá si.", tags: ["sněhulák","dovolená"] },
+            { setup: "Co řekne jedna zeď druhé?", punchline: "„Potkáme se na rohu.\"", tags: ["zeď","roh"] },
+            { setup: "Proč rybář nikdy nelže?", punchline: "Protože by se mu prodloužily ryby.", tags: ["rybář","ryba","lež"] },
+            { setup: "Co dělá déšť, když přestane?", punchline: "Sušárně dá výpověď.", tags: ["déšť","počasí"] },
+            { setup: "Proč Pondělí nikdo nemá rád?", punchline: "Protože se musí začít znovu.", tags: ["pondělí","týden"] },
+            { setup: "Co říká minutka hodině?", punchline: "„Ty zbabělče, vždycky utíkáš!\"", tags: ["čas","hodiny"] },
+            { setup: "Proč rok má 12 měsíců?", punchline: "11 bylo málo, 13 moc.", tags: ["rok","čas"] },
+            { setup: "Co dělá listopad?", punchline: "Padá. A padá. A ještě padá.", tags: ["listopad","podzim"] },
+            { setup: "Proč měsíc svítí v noci a slunce ve dne?", punchline: "Nechtělo se jim prohodit směnu.", tags: ["měsíc","slunce","noc","den"] },
+
+            // === CHUCK NORRIS (česká varianta) ===
+            { setup: "Chuck Norris neprskal na test.", punchline: "On ho porazil.", tags: ["chuck norris","test"] },
+            { setup: "Chuck Norris nevytáhne peněženku.", punchline: "Peněženka sama vyskočí.", tags: ["chuck norris","peněženka"] },
+            { setup: "Chuck Norris nespí.", punchline: "Čeká.", tags: ["chuck norris","spánek"] },
+            { setup: "Když Chuck Norris zaklepe na dveře,", punchline: "dveře řeknou „dále\".", tags: ["chuck norris","dveře"] },
+            { setup: "Chuck Norris uměl plavat,", punchline: "než se narodil.", tags: ["chuck norris","plavání"] },
+            { setup: "Chuck Norris se nebojí tmy.", punchline: "Tma se bojí jeho.", tags: ["chuck norris","tma"] },
+            { setup: "Chuck Norris netočí kolem Slunce.", punchline: "Slunce točí kolem něj.", tags: ["chuck norris","slunce","vesmír"] },
+            { setup: "Chuck Norris počítá do nekonečna.", punchline: "Dvakrát.", tags: ["chuck norris","matematika","nekonečno"] },
+            { setup: "Chuck Norris umí rozdělit deset vidličkou.", punchline: "A výsledek pak sní.", tags: ["chuck norris","matematika"] },
+            { setup: "Chuck Norris jednou vyhrál šachy v čtyřech tazích.", punchline: "A nepoužíval figurky.", tags: ["chuck norris","šachy"] },
+
+            // === HONZA ===
+            { setup: "Hloupý Honza v lese: „Budu počítat listy, abych nezabloudil.\"", punchline: "Listy padaly, takže do večera napočítal 0.", tags: ["honza","les","počítání"] },
+            { setup: "Honza u obchodníka: „Prosím pytel mouky.\"\n„A kolik?\"\n„Jeden pytel.\"\n„Ale jak těžký?\"", punchline: "„Na rameno vážený.\"", tags: ["honza","obchod","mouka"] },
+            { setup: "Honza v pohádkové zemi: „Mám tři přání.\"\n„Jaká?\"\n„První: víc přání.\"", punchline: "„To nejde.\"\n„Aha, tak druhé. Zapomněl jsem třetí.\"", tags: ["honza","pohádka","přání"] },
+            { setup: "Honza u lékaře: „Pane doktore, kde mě to bolí?\"", punchline: "„Tak to se zeptej svého těla, Honzo.\"", tags: ["honza","doktor","bolest"] },
+            { setup: "Chytrý Honza tatínkovi: „Tati, dám ti hádanku. Kdo stojí za mnou?\"\n„Nevím.\"", punchline: "„Já, tati. Jsem tu sám.\"", tags: ["honza","tatínek","hádanka"] },
+
+            // === AUTO / DOPRAVA ===
+            { setup: "Proč bicykl nejezdí sám?", punchline: "Protože se nedokáže udržet.", tags: ["kolo","bicykl","jízda"] },
+            { setup: "Řidič: „Proč tu stojíme?\"\n„Zácpa.\"\n„A proč stojí oni?\"", punchline: "„Protože my stojíme za nimi.\"", tags: ["auto","zácpa"] },
+            { setup: "Co řekne semafor autu?", punchline: "„Pěkně se vybarvuješ!\"", tags: ["auto","semafor"] },
+            { setup: "Potkají se tramvaj a autobus: „Kam jedeš?\"\n„Po kolejích.\"\n„A ty?\"", punchline: "„Po silnici. Dáme si kávu?\"", tags: ["auto","tramvaj","autobus"] },
+            { setup: "„Tati, proč auto nepláče?\"\n„Nemá oči.\"\n„A proč má světla?\"", punchline: "„Aby zvířata viděla, co je přejíždí.\"", tags: ["auto","světla","tatínek"] },
+            { setup: "Policista řidiči: „Jel jste 120 v obci!\"\n„Opravdu? Myslel jsem, že 130.\"", punchline: "„Nechte si tu legraci.\"", tags: ["auto","policie","rychlost"] },
+            { setup: "Proč autobus nestůně?", punchline: "Má vlastní zastávku.", tags: ["autobus","zastávka"] },
+            { setup: "Co dělá vlak, když má rýmu?", punchline: "Troubí místo houká.", tags: ["vlak","rýma"] },
+
+            // === POLICIE ===
+            { setup: "Policista volá na stanici: „Potřebujeme posily!\"\n„Proč?\"", punchline: "„Kávovar se pokazil.\"", tags: ["policie","káva"] },
+            { setup: "Policista chytí zloděje: „Co jste ukradl?\"", punchline: "„Jenom chvíli vašeho času.\"", tags: ["policie","zloděj"] },
+            { setup: "Policista ve škole: „Děti, co uděláte, když vidíte zloděje?\"", punchline: "„Napíšu to na Facebook.\"", tags: ["policie","škola","zloděj"] },
+            { setup: "Policista v obchodě: „Pane, můžete popsat zloděje?\"", punchline: "„Ano, ukradl mi popis.\"", tags: ["policie","zloděj","obchod"] },
+            { setup: "Policista na silnici: „Proč jste překročil rychlost?\"\nŘidič: „Jel jsem pomalu, pane.\"\n„Tachometr říkal 120.\"", punchline: "„Pardon, to byl vítr proti.\"", tags: ["policie","auto","rychlost"] },
+            { setup: "Policista zastaví řidiče: „Váš řidičák, prosím.\"\n„Ale já ho nemám.\"\n„A proč řídíte?\"", punchline: "„Protože auto se samo nepohne.\"", tags: ["policie","auto","řidičák"] },
+
+            // === VESMÍR ===
+            { setup: "Proč je Mars červený?", punchline: "Stydí se.", tags: ["vesmír","mars","planeta"] },
+            { setup: "Co dělá Měsíc, když ztratí stín?", punchline: "Čte si o zatmění.", tags: ["vesmír","měsíc"] },
+            { setup: "„Tati, je na Měsíci život?\"", punchline: "„Jenom v knihách, synku.\"", tags: ["vesmír","měsíc","tatínek"] },
+            { setup: "Proč je Země kulatá?", punchline: "Aby se slunce mělo kam schovat.", tags: ["vesmír","země","slunce"] },
+            { setup: "Potkají se dvě hvězdy: „Kam padneš?\"", punchline: "„Asi na něčí přání.\"", tags: ["vesmír","hvězda","přání"] },
+            { setup: "Co jedí astronauti?", punchline: "Vesmírnou stravu — planetky v omáčce z galaxie.", tags: ["vesmír","astronaut","jídlo"] },
+            { setup: "Proč kometa má ocas?", punchline: "Aby se mohla vrátit po stopě.", tags: ["vesmír","kometa"] },
+            { setup: "Jak se pozná astronaut na dovolené?", punchline: "Má pořád pocit, že je mu lehko.", tags: ["vesmír","astronaut","dovolená"] },
+
+            // === ŘEMESLA ===
+            { setup: "Malíř zákazníkovi: „Jakou máte rád barvu?\"\n„Modrou.\"\nMalíř nabarví bíle. „Proč bílá?\"", punchline: "„Protože modrá nebyla.\"", tags: ["malíř","barva"] },
+            { setup: "Kadeřník zákazníkovi: „Jak to chcete ostříhat?\"\n„Jako kolegu vedle.\"", punchline: "„Tak to už si musím ostříhat sám sebe.\"", tags: ["kadeřník","vlasy"] },
+            { setup: "Zámečník: „Potřebuji klíč.\"\n„Jaký?\"", punchline: "„Takový, co otevírá zámek. Proto jsem zámečník!\"", tags: ["zámečník","klíč"] },
+            { setup: "Učitel v autoškole: „Vidíte babičku na přechodu. Co uděláte?\"\n„Brzdím.\"\n„Výborně. A pak?\"", punchline: "„Pomůžu jí přejít.\"", tags: ["autoškola","babička","přechod"] },
+            { setup: "Zedník: „Ta stěna není rovně!\"\nArchitekt: „Na oko vypadá.\"", punchline: "„Tak zavřete oko!\"", tags: ["zedník","stěna","architekt"] },
+            { setup: "Hasič: „Kdo zapnul klimatizaci?\"\n„Já.\"", punchline: "„Vypněte ji, ať nezamrzneme.\"", tags: ["hasič","klimatizace"] },
+            { setup: "Zahradník: „Seděl jsem na trávě celý den.\"\n„A proč?\"", punchline: "„Chtěl jsem vidět, jak trávě roste.\"", tags: ["zahradník","tráva"] },
+            { setup: "Zubař: „Proč jste přišel?\"\n„Otevřel jsem obálku s vaším účtem.\"", punchline: "„To jste měl přijít rovnou.\"", tags: ["zubař","účet"] },
+            { setup: "Truhlář: „Kolik židlí jste si objednal?\"\n„Čtyři.\"\n„Proč čtyři?\"", punchline: "„Aby každá nohá mého stolu měla svou židli.\"", tags: ["truhlář","židle","stůl"] },
+            { setup: "Instalatér: „Tady máte rozbité potrubí.\"\n„A kolik to bude?\"\n„5000.\"\n„Za co?!\"", punchline: "„Za vědění, kde klepnout.\"", tags: ["instalatér","potrubí","peníze"] },
+            { setup: "Pekár: „Proč máte tak špatné koláče?\"\nUčeň: „Myslel jsem, že foukat znamená péct.\"", punchline: "", tags: ["pekař","koláč"] },
+
+            // === OSTATNÍ / MIX ===
+            { setup: "Proč se ryba směje?", punchline: "Protože si vzpomněla na ploutev-ek.", tags: ["ryba","smích"] },
+            { setup: "Co dělá kamen v řece?", punchline: "Nic, celý den jenom leží a dívá se na ryby.", tags: ["řeka","kámen","ryba"] },
+            { setup: "Proč kukačka kuká?", punchline: "Protože neumí říct „hele, kolik je hodin\".", tags: ["kukačka","hodiny","zvíře"] },
+            { setup: "Co řekne pes, když mu majitel dá kost?", punchline: "Nic, je pes. Ale mává ocasem jako blázen.", tags: ["pes","kost"] },
+            { setup: "Proč má žirafa skvrny?", punchline: "Aby se v lese neztratila — je dostatečně vysoká sama o sobě.", tags: ["žirafa","skvrny","les"] },
+            { setup: "Co dělá sněhulák, když mu zmizne mrkev?", punchline: "Má špatný čich.", tags: ["sněhulák","mrkev"] },
+            { setup: "Proč v divadle nehrají zvířata?", punchline: "Protože neumějí zpaměti texty.", tags: ["divadlo","zvíře"] },
+            { setup: "Co dělá housenka v matematice?", punchline: "Počítá nohy.", tags: ["housenka","matematika"] },
+            { setup: "Co dělá pavouk po jídle?", punchline: "Uklidí síť.", tags: ["pavouk","síť"] },
+            { setup: "Proč se růže červená?", punchline: "Když vidí hnojivo.", tags: ["růže","květina"] },
+            { setup: "Co je nejsmutnější ovoce?", punchline: "Slza — slivka, co se rozbrečela.", tags: ["ovoce","slivka"] },
+            { setup: "Proč má kolo dva kola?", punchline: "S jedním by to byla jednokolka, a ta je cirkusová.", tags: ["kolo","cirkus"] },
+            { setup: "Co dělá balón na obloze?", punchline: "Letí, dokud nespadne.", tags: ["balón","obloha"] },
+            { setup: "Proč má tužka gumu?", punchline: "Protože lidé dělají chyby.", tags: ["tužka","guma","chyba"] },
+            { setup: "Co říká lampa ve tmě?", punchline: "„Rozsviť mě, prosím!\"", tags: ["lampa","tma"] },
+            { setup: "Proč telefon zvoní?", punchline: "Aby ti neuteklo, že s tebou někdo chce mluvit.", tags: ["telefon"] },
+            { setup: "Co dělá chytrý telefon ve škole?", punchline: "Napovídá.", tags: ["telefon","škola"] },
+            { setup: "Proč je banán ohnutý?", punchline: "Protože narovnaný by to byl meloun.", tags: ["banán","meloun"] },
+            { setup: "Co dělá sekačka na trávu v zimě?", punchline: "Spí, a sní o trávě.", tags: ["sekačka","tráva","zima"] },
+            { setup: "Proč je písek tvrdý pod vodou a měkký na pláži?", punchline: "Protože ve vodě je celou noc stísněný.", tags: ["písek","voda","pláž"] },
+            { setup: "Co řekne písmeno A písmenu B?", punchline: "„Pojď, zahrajeme si slovní fotbal.\"", tags: ["písmeno","abeceda"] },
+            { setup: "Proč televize nedokáže mlčet?", punchline: "Protože ji nikdo nevypnul.", tags: ["televize"] },
+            { setup: "Co dělá deštník ve sprše?", punchline: "Pracuje přesčas.", tags: ["deštník","sprcha"] },
+            { setup: "Proč se ručník usměje na mokré ruce?", punchline: "Ví, že bude mít práci.", tags: ["ručník","ruce"] },
+            { setup: "Co dělá svíčka, když zhasne?", punchline: "Konečně si odpočine.", tags: ["svíčka"] },
+            { setup: "Proč se židle nerada sedá?", punchline: "Celý den na ní sedí někdo jiný.", tags: ["židle"] },
+            { setup: "Co řekne talíř lžíci?", punchline: "„Bez tebe by mě nikdo nevzal vážně.\"", tags: ["talíř","lžíce","jídlo"] },
+            { setup: "Proč hodiny nemluví?", punchline: "Pořád jenom tikají.", tags: ["hodiny"] },
+            { setup: "Co je nejlepší lék na bolení hlavy ze školy?", punchline: "Prázdniny.", tags: ["škola","hlava","prázdniny"] },
+            { setup: "Proč mají prsty nehty?", punchline: "Aby bylo co žvýkat při testech.", tags: ["prsty","test","škola"] },
+            { setup: "Co řekne vypínač žárovce?", punchline: "„Nerozsvěcuj se sama, to je moje práce.\"", tags: ["vypínač","žárovka"] },
+            { setup: "Proč se voda nechce ohřívat rychle?", punchline: "Protože zná přísloví: „Kdo spěchá, vaří vodu dvakrát.\"", tags: ["voda","vaření"] },
+            { setup: "Co dělá kaktus v dešti?", punchline: "Konečně se napije, ale tváří se, že to nepotřeboval.", tags: ["kaktus","déšť"] },
+
+            // === ROZŠÍŘENÍ: scrape z czechtheworld.com (filtrováno pro 11leté) ===
+            { setup: "Co to znamená, když v řadě třiceti netopýrů, visících hlavami dolů, sedí jeden s hlavou vzhůru?", punchline: "Omdlel!", tags: ["děti", "hádanka", "rodina", "zvíře"] },
+            { setup: "Kdy přináší největší smůlu vidět černou kočku, jak vám přebíhá přes cestu?", punchline: "Když jste myš.", tags: ["děti", "myš", "rodina", "zvíře"] },
+            { setup: "Rozmlouvají spolu dvě krávy na pastvě: „Slyšela jste už, že prý lev je král zvířat?“", punchline: "„Opravdu? A kolik nadojí?“", tags: ["děti", "kráva", "lev", "rodina", "zvíře"] },
+            { setup: "V moři plavou dva žraloci a vidí windsurfaře.První: „Hele, svačina.“", punchline: "Druhý: „A dokonce na tácku s ubrouskem!“", tags: ["děti", "jídlo", "rodina", "zvíře"] },
+            { setup: "Jaká tři slova má žralok nejraději?", punchline: "„Muž přes palubu!“", tags: ["děti", "lidi", "rodina", "ryba", "zvíře"] },
+            { setup: "Když slon sedí na plotě, jaký je čas?", punchline: "Čas vyměnit plot.", tags: ["děti", "rodina", "slon", "sloní", "zvíře"] },
+            { setup: "Proč šnek nemůže utíkat? \nProtože by mu vlály oči!", punchline: "", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Potkají se dva psi a jeden druhému říká: „Kam jdeš?“\n„S blechama k veterináři.“ \n„To je zvláštní, já je mám dva roky a ještě mi neonemocněly!“", punchline: "", tags: ["děti", "nemoc", "rodina", "zvíře"] },
+            { setup: "Jsou dvě blechy na zastávce, běží kolem pes a jedna blecha říká: „Tak ahoj, jede mi autobus.“", punchline: "", tags: ["děti", "pes", "rodina", "zvíře"] },
+            { setup: "Mladý pár přijede na chovatelskou stanici psů: „Jedeme vrátit toho psa, co jsme předvečerem koupili.“\n„A copak je s ním špatně?“ zajímal se chovatel.", punchline: "„No včera večer štěkal tak hlasitě, že jsme ani neslyšeli zloděje v kuchyni!“", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "„Haló, volám ohledně toho hlídacího psa, co jsme od vás koupili. Můžete nám poradit, jak to máme zařídit, aby nás pustil domů?“", punchline: "", tags: ["děti", "rodina", "zima", "zvíře"] },
+            { setup: "Kouzelník pracuje na výletní lodi, a protože se obecenstvo při každé plavbě střídá, může triky opakovat. Ale má to jeden háček. Kapitán má mluvícího papouška, který všechny jeho triky už pochopil, vyrušuje a vždy obecenstvu vše poví. Například: „Pozor, má pod stolem schované květiny!“ Nebo: „Vidíte, to není ten samý klobouk!“ apod. Jednou se loď potopí, ale kouzelník a papoušek se zachrání na kusu dřeva. Oba dva mlčí a dívají se na sebe. Po třech dnech Papoušek prolomí ticho a povídá: „OK. Nemůžu na to přijít. Kam jsi tu loď schoval?!“", punchline: "", tags: ["děti", "kouzelník", "léto", "papoušek", "pták", "rodina", "zvíře"] },
+            { setup: "Víte, proč nechodí stonožky lyžovat?", punchline: "Protože než by si nasadily lyže na všechny nohy, tak by bylo léto!", tags: ["děti", "léto", "rodina", "zvíře"] },
+            { setup: "Letí vrabec kolem silnice. Nedívá se a napálí to do cyklisty. Ptáček leží a nehýbe se. Cyklista ho opatrně zvedne a vezme si ho domů. Koupí mu novou klec, dá mu tam vodu a chleba. Po dvou hodinách se ptáček probere a říká si: „Kde to jsem?", punchline: "Mříže, voda, chleba… Že já jsem toho chlápka zabil!“", tags: ["cesta", "děti", "jídlo", "pták", "rodina", "zvíře"] },
+            { setup: "Všechna zvířátka z lesa se sešla na každoročním sněmu. V čele sněmu předsedá medvěd a povídá: „Sešlo se mi tu několik stížností na jedno zelené zvířátko, které nás svým kuňkáním každý večer obtěžuje. Jsem si jist, že nemusím přímo jmenovat ono zvířátko a jistě všichni uznáte, že s tím musíme něco udělat…“ Medvěd se odmlčí, ze zadní lavice vstane žabka a kuňkavým hlasem povídá: „Jasněěě, známeee, krokodýýýl, vyžeňte ho z lesaaa!!!“", punchline: "", tags: ["děti", "medvěd", "rodina", "zvíře"] },
+            { setup: "Veverka na začátku zimy louská poslední oříšky, úplně hladová, konečně v teple svého stromu. Zmrzlýma prstama rozlouskne první a jediné, co z něj je, jsou přenádherné stříbrné šaty. Už celkem naštvaná, nervózní z hladu rozlouskne druhý – a jsou z něj ještě krásnější zlaté šaty. „Ale notáák!“ skučí a louská poslední oříšek. Naštvaně ho rozlouskne a vypadnou z něj saténové šaty pošité pravými diamanty. Veverka vyhodí všechny šaty dírou ve stromě, dívá se, jak padají, a naštvaně nadává: „Sakra, tak já už se kvůli tý pitomý pohádce nemůžu ani nažrat!“", punchline: "", tags: ["děti", "rodina", "strom", "veverka", "zima", "zvíře"] },
+            { setup: "Plavou si takhle dva žraloci. Jeden je otec a učí svého syna lovit. Jsou u malé loďky a táta povídá „Hele, dělá se to takhle, obepluješ ho jednou. Chvilku počkáš a potom ho obepluješ po druhé. A potom ho ještě jednou naposled obepluješ a potom ho konečně můžeš sežrat.“ Žralokův syn nechápe, a tak se zeptá „A nemůžu ho jako sežrat hned?", punchline: "“ Táta žralok se znechuceně zatváří a povídá „Ty bys ho snad jedl i s bobkama?!“", tags: ["děti", "rodina", "ryba", "tatínek", "zima", "zvíře"] },
+            { setup: "Medvěd jede se zajícem na motorce. Řídí medvěd a zeptá se zajíce: „Bojíš se?“\nZajíc: „Ne.“ \nŘídí zajíc a zeptá se medvěda: „Bojíš se?“\nMedvěd: „Ne.“\nZajíc: „Bát by ses měl.“\nMedvěd: „Proč?“", punchline: "Zajíc: „Protože nedosáhnu na brzdu.“", tags: ["děti", "medvěd", "rodina", "zajíc", "zvíře"] },
+            { setup: "Malý komár se právě vrátil ze svého prvního letu a nadšeně vypravuje mamince: „Mami, to ti bylo prima, představ si, jak jsem tak letěl, všichni mi tleskali!“", punchline: "", tags: ["děti", "maminka", "rodina", "zvíře"] },
+            { setup: "Přijedou manželé z dovolené a zjistí, že jim mluvící papoušek protelefonoval 10 tisíc. Za trest ho přibijí za křídla na zeď. Jak tak visí, dívá se na druhou stranu a tam visí Ježíš na kříži, a tak se ho zeptá: „Hej INRI, jak dlouho tu visíš?", punchline: "“ Ježíš zvedne hlavu a tichým hlasem odpoví: „Už víc jak 2000 let.“ Papoušek se vyděsí: „Kam jsi volal?!“", tags: ["děti", "papoušek", "pták", "rodina", "zvíře"] },
+            { setup: "Letí tři netopýři a usadí se na stromě. Jeden odletí a za chvíli se vrátil a měl jeden zub od krve. A říká“ Vidíte támhle to stádo koní?", punchline: "Tak to jsem vysál.“ Odletí druhý vrátí se a má dva zuby od krve. A říká: „Vidíte támhle to stádo krav? Tak to jsem vysál.“ Odletí třetí a vrátí se s celou hlavou od krve a ti dva netopýři se ho ptají: „Tak co?“ A netopýr na to řekl: „Vidíte támhle ten sloup? Tak ten jsem neviděl.“", tags: ["děti", "kůň", "rodina", "strom", "zvíře"] },
+            { setup: "Byl jednou jeden papoušek a ten mluvil velmi sprostě. Jeho pán už nevěděl, co s ním, tak ho dal na chvíli do mrazáku. Po chvíli ho šel zkontrolovat. A papoušek říká: Omlouvám se za svoje nevhodné chování. Mám jen jednu otázku: Co udělalo to kuře?", punchline: "", tags: ["děti", "lidi", "papoušek", "pták", "rodina", "zvíře"] },
+            { setup: "Cvičí stará kočka a vždy, když něco udělá, křupne to v ní. Přijde k ní druhá kočka a říká jí: „Ty ji ale stará!“ Kočka přestane cvičit a říká: „Já nejsem stará, ale křupavá!“", punchline: "", tags: ["děti", "kočka", "rodina", "zvíře"] },
+            { setup: "Povídají si dva koně a vidí běžet zebru. Jeden kůň na to:", punchline: "„Viděl si ho? To byl uprchlý vězeň!!!“", tags: ["děti", "kůň", "rodina", "zvíře"] },
+            { setup: "Může klokan vyskočit výš než dům?", punchline: "Ano, dům přece neskáče!", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Kapr říká kaprovi: „Hele, Pepo, věříš na život po Vánocích?“", punchline: "", tags: ["děti", "rodina", "ryba", "vánoce", "zvíře"] },
+            { setup: "Baví se dva pasáčci ovcí, jak velká mají stáda. První říká: „Já mám ve stádě 98 ovcí a ty?", punchline: "“ „Já nevím, pokaždé, když se je snažím spočítat, usnu!“", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Ve zvířecí škole moudrá sova nachytá mladou lišku, jak opisuje. „Vezmi si příklad třeba z krtka,“ říká podvodnici sova. „ Krtek ještě nikdy do cizího nenakoukl!“", punchline: "", tags: ["děti", "pták", "rodina", "zvíře"] },
+            { setup: "Je to modré a skáče to ze stromu na strom, co to je?", punchline: "Veverka v montérkách.", tags: ["děti", "hádanka", "rodina", "strom", "veverka", "zvíře"] },
+            { setup: "Baví se dva kapři: „Nevíš o něčem k snědku?“", punchline: "„Vím, ale má to háček!“", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Skupinka lvů pozoruje z dálky skupinu rytířů v brnění. Jeden lev si povzdechne: Ach jo, zase konzervy!!!", punchline: "", tags: ["děti", "lev", "rodina", "zvíře"] },
+            { setup: "Slon s mravencem kráčeli pouští. Šli dlouho, předlouho, až slon upadl a pravil: „Asi umřu žízní.“", punchline: "Mravenec ho uklidnil: „Neboj se, nesu s sebou plnou bandasku vody.“", tags: ["děti", "rodina", "slon", "sloní", "zvíře"] },
+            { setup: "Povídají si 2 kamarádi rybáři. První říká: Já jsem chytil tááákhle velkou rybu. Druhý rybář: Týjo to nic není já jsem chytil lampu a ještě svítila. No to není možný tvrdí první. Dobře ty zkrátíš tu rybu a já zhasnu tu lampu.", punchline: "", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Omlouvá se zajíc hadovi: „Promiň, že jsem se ti posmíval, že nemáš nohy.“\nHad: „Ale, to nic není!“", punchline: "Zajíc: „Tak, ruku na to!“", tags: ["děti", "had", "rodina", "zajíc", "zvíře"] },
+            { setup: "Přijdou reportéři za slepicí a ptají se: „Je pravda že jste snesla sedmi kilové vejce?", punchline: "“ „No ano, je“ odpoví slepice. „A máte nějaké cíle do budoucna?“ ptají se dál. „Ano, snést deseti kilové vejce.“ Reportéři se jdou zeptat kohouta: „Víte, že jedna z vašich slepic snesla rekordní vejce?“ „No ano.“ Odpoví kohout. „A máte nějaké plány do budoucna?“ vyptávají se dál. „Ano, rozbít pštrosovi zobák!“", tags: ["děti", "jídlo", "rodina", "zvíře"] },
+            { setup: "V lese žije strašný medvěd, a pokaždé, když vykonává potřebu v kadibudce, utře si „zadeček“ nějakým zvířetem. První den je to liška. Povídá vládci lesa, jelenovi: „Jelene, medvěd je strašný, můžeš s tím něco udělat?", punchline: "“ Druhý den přijde na řadu zajíc: „Jelene, mě už to nebaví!“ Třetí den je budka celá rozdupaná, zničená a polámaná. Jelen se ptá: „Neví o tom někdo něco?“ Ježek nato: „Já bych možná věděl.“", tags: ["děti", "ježek", "liška", "medvěd", "rodina", "zajíc", "zvíře"] },
+            { setup: "Dítě velblouda se ptá maminky: „Mami proč máme tak dlouhé chlupy na nohách?“ \n„To aby se nám líp šlo po písku.“ \n„Mami proč máme dlouhé řasy nad očima?“ \n„Aby nám písek nelétal do očí.“", punchline: "„To je nám teda k ničemu, když jsme v ZOO.“", tags: ["děti", "maminka", "rodina", "zvíře"] },
+            { setup: "Zebra a tučňák jdou k fotografovi. „Dneska prosím barevnou fotku, ne jako minule, když jste udělal černobílou!“ poprosí zebra.", punchline: "", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Pán v desátém patře zalévá květiny. V květináči vidí šneka. Vezme ho a vyhodí ho z okna. Po deseti letech uslyší pán, jak někdo zazvonil u jeho dveří. Pán otevře, ve dveřích stojí nasupený šnek a říká: „To si vypiješ!!!“", punchline: "", tags: ["děti", "lidi", "rodina", "zvíře"] },
+            { setup: "Slepice povídá neposlušným dětem. „Kdyby to viděl Váš otec, tak by se na grilu obracel.“", punchline: "", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Přijde pán k veterináři a povídá: „Víte můj pes je jako já vášnivý fanoušek Sparty. A když Sparta prohraje, tak je mu strašně zle, zvrací, nic nežere…“ Veterinář:“ A co dělá, když Sparta vyhraje?", punchline: "“ Pán: „Já nevím, já ho mám teprve půl roku.“", tags: ["děti", "lidi", "pes", "rodina", "zvíře"] },
+            { setup: "Dva lenochodi sedí nehybně na větvi stromu. Po třech dnech začne jeden pomalu otáčet hlavu a druhý mu říká: „Co stresuješ ?!“", punchline: "", tags: ["děti", "rodina", "strom", "zvíře"] },
+            { setup: "Zvířátka v lese se dohodla, že si postaví sídliště. Do města na příslušné úřady půjde liška, ta je dost fikaná, všechna potřebná potvrzení a povolení rychle vyřídí, řekla si zvířátka. Za měsíc se liška vrátí s prázdnou. Tak se do města vydá medvěd, za měsíc ale taky přijde s prázdnou. Zvířátka už se smiřují s tím, že budou mít smůlu, když se ozve oslík: „Já bych to zkusil vyřídit!“ Ostatní zvířátka se začnou smát a říkají: „Ani liška se svým intelektem a ani silný medvěd to nedokázali vyřídit, tak ty už vůbec nemáš šanci. „Ale oslík se těmito řečmi nedal odradit a vydal se do města. Za tři dny zvířátka vidí oslíka, jak mává všemi potvrzeními a za ním jedou bagry, jeřáby a nákladní auta. Všichni se strašně diví: „Jak si to dokázal, oslíku?", punchline: "“ „To bylo snadné!“ říká osel, „přijdu na úřad, otevřu první dveře – spolužák, druhé dveře – spolužák, třetí dveře – spolužák…“", tags: ["děti", "liška", "medvěd", "rodina", "zvíře", "žák"] },
+            { setup: "Ptá se malá myš maminky: „Co to vlastně je ten jed na myši?“\n„Víš, miláčku, to je něco jako kočka v prášku!“", punchline: "", tags: ["děti", "kočka", "maminka", "myš", "rodina", "zvíře"] },
+            { setup: "Jeden muž říká druhému muži, že se mu ztratil kůň. Druhý mu na to říká: „No a co jsi udělal, Pepo?“\nPrvní muž: „Dal jsem inzerát do novin.“", punchline: "Druhý muž: „Tvůj kůň umí číst, jo?“", tags: ["děti", "kůň", "lidi", "rodina", "zvíře"] },
+            { setup: "Povídá si žába s žábou. První žába: „Je mi špatně.“ A ta druhá: „Nepovídej, no jsi nějak zelená.“", punchline: "", tags: ["děti", "rodina", "zvíře", "žába"] },
+            { setup: "Přijde jednou jedna holka na návštěvu ke kámošce a jak tak popíjejí kafe, přijde do obýváku černá kočka a říká: „Neviděly jste tady někde dnešní noviny?“", punchline: "Holka zmateně kouká, ale její kámoška ji uklidňuje: „Nenech se zmást, ona si akorát prohlíží obrázky.“", tags: ["děti", "kočka", "rodina", "zvíře"] },
+            { setup: "„Tati je pravda, že mrkvička je zdravá na oči?", punchline: "“ Ptá se malý Honzík. „Jistě Honzíku, už jsi snad viděl králíka s brýlemi?“", tags: ["děti", "rodina", "zvíře"] },
+            { setup: "Jdou zebra a žirafa k fotografovi. Fotograf se ptá: „Budete to chtít černobílé nebo barevné?“", punchline: "", tags: ["děti", "rodina", "zvíře", "žirafa"] },
+            { setup: "Běží takhle pes po poušti a říká: „Jestli do minuty nenajdu patník, tak se asi počůrám.“", punchline: "", tags: ["děti", "pes", "rodina", "zvíře"] },
+            { setup: "Je to zelený a točí se to furt dokola, co to je?", punchline: "Žába v mixéru.", tags: ["děti", "hádanka", "rodina", "zvíře", "žába"] },
+            { setup: "Pepíček přijde domů. Tatínek se ho ptá: „Tak co bylo ve škole?", punchline: "“ „Já jsem se nejvíc hlásil.“ „A na co se paní učitelka ptala?“ „Kdo rozbil okno na chodbě.“", tags: ["děti", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "škola"] },
+            { setup: "Pepíčku, proč vytahuješ ty rybičky z akvária?", punchline: "! Promiň, maminko, ale bál jsem se, že se utopí.", tags: ["děti", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček se ptá tatínka: „Tati, indiáni se malovali, když se chystali k boji, viď?“\n„Přesně tak,“ odpoví tatínek.", punchline: "„Tak si dej pozor na mámu. Je v koupelně a něco chystá,“ říká Pepíček.", tags: ["děti", "pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Pepíček je na návštěvě u prarodičů. Babička mu řekla: „Nastav dlaň, nasypu ti do ní oříšky.“\n„Dej je, babi, radši tátovi!“\n„Copak ty nemáš rád oříšky?“", punchline: "„Mám je rád, ale táta má větší dlaň!", tags: ["babička", "děti", "pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Paní učitelka se ptá při matematice Pepíčka: “Když ti dá maminka jednu žvýkačku a tatínek dvě, co budeš mít?”", punchline: "“Prosím, svěží dech.”", tags: ["děti", "maminka", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "škola"] },
+            { setup: "Pepíček přijde do školy a všem se chlubí, že má jeho sestra žloutenku. Slyší to paní učitelka a pošle Pepíčka na týden domů, aby nikoho nenakazil. Když se po týdnu Pepíček vrátí, ptá se ho paní učitelka: „Tak co, Pepíčku, ještě má tvoje sestra žloutenku?", punchline: "“ Pepíček odpoví: „No to já nevím. Ono chvíli trvá, než ty dopisy z Austrálie přijdou.“", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "„Dobrý den paní učitelko, Pepíček nemůže přijít do školy je hrozně nemocný.“\n„V pořádku a kdo volá?“", punchline: "„Můj táta.“", tags: ["děti", "nemoc", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "škola"] },
+            { setup: "Paní učitelka: Pepíčku, kde leží Zanzibar?", punchline: "Pepíček: Nevím, ještě jsem malý, abych znal všechny bary.", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "Pepíček se v noci vzbudí a vidí, jak z chodby odchází zloděj s plnými taškami. Potichu, aby nevzbudil rodiče, se Pepíček ke zloději připlíží, a šeptem ho poprosí: „Prosím vás, a nemohl byste ukrást taky moje housle?“", punchline: "", tags: ["děti", "pepíček", "rodina", "škola"] },
+            { setup: "Paní učitelka se ptá třídy: „Proč stojí socha Svobody v newyorském přístavu, Pepíčku?“", punchline: "„Protože si nemůže sednout!“", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "Jede Pepíček s babičkou ve vlaku a povídá jí: „Babi, koukni se na tu množinu kraviček, co se pase na louce!“ „Co to kecáš, kluku, jaká množina kraviček?", punchline: "Vždyť tam žádné nejsou…“ „Ale to je prázdná množina, babičko…“", tags: ["babička", "děti", "pepíček", "rodina", "vlak", "škola"] },
+            { setup: "Při přírodopisu:\nUčitelka: „Děti, každý z vás mi řekne jednu část neživé přírody. Začne Pepíček.“", punchline: "Pepíček: „Mrtvé moře!“", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "Ptá se máma Pepíčka: „Proč krmíš slepice čokoládou?“\nOn na to odpoví: „Aby mi snesly kindervajíčko!“", punchline: "", tags: ["děti", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Ve škole se ptá paní učitelka: „Pepíčku, jak poznáš třešeň od jabloně?“\n„Podle plodů.“\n„Dobře, a když plody ještě nemají?“", punchline: "A Pepíček: „Počkám.“", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "„Pepíčku, proč jsi snědl ty peníze, co jsem ti dal?“", punchline: "„Vždyť jsi mi je dal na oběd.“", tags: ["děti", "jídlo", "peníze", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček je v parku a jezdí na kole. Volá na maminku: „Já jezdím bez ruuukkoouuu.“ Po chvilce volá znovu: „Mami, já jezdím bez žžžuuubbbůůů.“", punchline: "", tags: ["děti", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "„Pepíčku, učil ses vůbec?“\n„Ano.“\n„A proč máš v domácím úkolu tolik chyb?“", punchline: "„Protože chybami se člověk učí.“", tags: ["děti", "pepíček", "rodina", "úkol", "škola"] },
+            { setup: "Učitelka učí děti zlomky: „Když sním polovinu dortu, co z toho budu mít?", punchline: "“ A na to Pepíček: „Bolest břicha.“", tags: ["děti", "nemoc", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "Pepíček přijde domů a řekne: „Mami, představ si, že jsem dostal tři jedničky.“\n„No to jsi šikovný!“", punchline: "„Ale máš si to jen představit!“", tags: ["děti", "jednička", "pepíček", "rodina", "číslo", "škola"] },
+            { setup: "Pepíček přijde domů celý mokrý a maminka se ho ptá: ,,Co jsi tam venku dělal, že jsi tak mokrý?", punchline: "“ A Pepíček na to: ,,Ále, hráli jsme si s klukama na psy, a já byl strom.“", tags: ["děti", "maminka", "pepíček", "rodina", "strom", "škola"] },
+            { setup: "Maminka: „Pepíčku, pojď se honem podívat, kuřátko začíná proklovávat skořápku. Vidíš?“\nPepíček: „Jo, vidím.“\nMaminka: „To je dobře, alespoň už od teď budeš vědět, jak se kuře dostane z vejce ven.“", punchline: "Pepíček: „To už vím dávno. Mne by spíš zajímalo, jak se dostalo dovnitř.“", tags: ["děti", "jídlo", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "„Tak co, Pepíčku, jaký je váš nový učitel?“\n„Hodný a zbožný, tati.“\n„Zbožný?“ „Ano. Při každé mé odpovědi jenom říkal: Pane bože, pane bože.“", punchline: "", tags: ["děti", "pepíček", "rodina", "učitel", "škola"] },
+            { setup: "Pepíček přijde domů od zubaře a maminka se ho ptá jestli ho ten zoubek ještě bolí. Pepíček odpoví: „Já nevím, pan zubař si ho ještě nechal u sebe.“", punchline: "", tags: ["doktor", "děti", "lidi", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Dědeček jde s Pepíčkem parkem a proti nim paní učitelka.\nPepíčku, schovej se, dnes jsi nebyl ve škole!", punchline: "Ne, dědo, ty se schovej, dneska jsi měl pohřeb…", tags: ["dědeček", "děti", "pepíček", "rodina", "učitel", "učitelka", "škola"] },
+            { setup: "Na Vánoce: Pepíček přiběhne do kuchyně a křičí:\n„Maminko! Hoří stromeček!“\n„Neříká se hoří, ale svítí.“\nPepíček se vrátí do obýváku a za chvíli křičí: „Mamííí! Už svítí i záclona!“", punchline: "", tags: ["děti", "maminka", "pepíček", "rodina", "strom", "vánoce", "škola"] },
+            { setup: "Pepíček se ptá maminky:\n„Mami, je pravda že když někdo umře, zůstane z něj jen prach?“\nMaminka odpoví:\n„Ano to je pravda Pepíčku.“\nPepíček řekne:", punchline: "„Tak to mi někdo umřel pod postelí!“", tags: ["děti", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček prosí tátu:\n„Tati, kup mi buben.“ \n„Nekoupím, budeš mě rušit při práci.“", punchline: "Pepíček: „Neboj, budu bubnovat jenom, když budeš spát.“", tags: ["děti", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček říká mamince, že ho bolí ucho. Maminka říká: „To bude zánět středního ucha.“ Pepíček řekne: „To teda nebude, já žádné střední ucho nemám, já mám jen pravé a levé!“", punchline: "", tags: ["děti", "maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíčku, co jsi měl na vysvědčení?\nSamé…\nTy jsi ale šikovný!", punchline: "… pětky", tags: ["děti", "matematika", "pepíček", "pětka", "rodina", "vysvědčení", "škola"] },
+            { setup: "Pepíčku, jak zní rozkazovací způsob slovesa mlčet?", punchline: "– Psssst!", tags: ["děti", "pepíček", "rodina", "škola"] },
+            { setup: "Přijde malý Pepíček domů z fotbalu a povídá:\n„Tati, dal jsem dva góly!!!“\n„A jak to dopadlo?“", punchline: "„1:1“", tags: ["děti", "fotbal", "pepíček", "rodina", "škola"] },
+            { setup: "Hurvínek šel na očkování, a křičí přes celou ordinaci. \nSpejbl ho uklidňuje: „Hurvajs, nekřič, vždyť ani nevíš proti čemu tě očkují.“", punchline: "„Vím. Proti mé vůli!“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Pan Spejbl vezme Hurvínka poprvé do opery. Když dirigent pozvedve taktovku, ptá se Hurvínek: „Proč ten pán vyhrožuje té paní na jevišti?“  „On ji nevyhrožuje.“", punchline: "„Tak proč ta paní řve?“", tags: ["děti", "hurvínek", "lidi", "mánička", "rodina", "spejbl"] },
+            { setup: "„Máničko, dáš mi dvě koruny?“\n„Nedám, mám jen jednu.“\n„Tak mi dej jednu, budeš mi jednu dlužit a já ti budu taky dlužit. Takže si budem kvit!“", punchline: "", tags: ["děti", "hurvínek", "mánička", "peníze", "rodina", "spejbl"] },
+            { setup: "„Hurvajs, proč otevíráš olejovky před akváriem?", punchline: "“ Ptá se Spejbl Hurvínka. „Aby rybičky viděly, jak dopadnou, když budou zlobit.“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "„Taťuldo, dej mi 5 korun.\n„Nedám, Hurvínku.“\n„Když mi dáš 5 korun, tak ti řeknu, co říká každé ráno pošťák paní Kateřině.“\n„Tady máš, co říká?“", punchline: "„Dobrý den, tady je vaše pošta.“", tags: ["děti", "hurvínek", "mánička", "peníze", "rodina", "spejbl"] },
+            { setup: "Hurvínek z Máničkou jsou v kině. Hurvínek: „Máničko sedí se ti dobře?“ \n„Ano!“ \nHurvínek: „Vidíš dobře?“ \n„Ano!“", punchline: "„Tak si to pojď se mnou vyměnit!“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Učitel zadává úkol: Doma vypracujete cvičení 8, 9 a 10. Hurvínek si povzdechne: Chudák taťulda.", punchline: "", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl", "tatínek", "učitel", "úkol"] },
+            { setup: "Policista k panu Spejblovi: „Pane řidiči, nesvítí vám světla, tak si vystupte.“ „To už jsem zkusil, ale nepomohlo to,“ ujišťuje ho pan Spejbl.", punchline: "", tags: ["auto", "děti", "hurvínek", "lidi", "mánička", "policie", "rodina", "spejbl"] },
+            { setup: "„Ti dospělí jsou ale komičtí,“ rozčiluje se Hurvínek.", punchline: "", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "„Když zlobím, dostanu vynadáno, a když jsem hodný, tak mi měří teplotu.“", punchline: "", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "„Tady čtu, Hurvínku, že v případě požáru mám volat 150,“ diví se Spejbl. „A co je na tom divného, taťuldo?“", punchline: "„Za mého mládí jsme vždycky volali HOŘÍ, HOŘÍ!“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "„Hurvínku, v levé kapse máš dvacet korun a v pravé šedesát. Co máš?", punchline: "“  „Cizí kalhoty, pane učiteli.“", tags: ["děti", "hurvínek", "mánička", "peníze", "rodina", "spejbl", "učitel"] },
+            { setup: "„Hurvínku, ty bys mohl být ten nejhodnější chlapec na světě, kdybys chtěl.“", punchline: "„Já vím, ale mě do toho vždycky něco vleze…“", tags: ["děti", "hurvínek", "lidi", "mánička", "rodina", "spejbl"] },
+            { setup: "„Kde jsi byl, Hurvínku?“ \n„U Máničky.“ \n…A nepřišel jsi tam nevhod?“ \n„Naopak taťulínku. Když jsem vstoupil, tak paní Kateřina zvolala:,,No, ty jsi nám tu chyběl!“", punchline: "", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Hurvínek přibíhá pozdě do školy. Na chodbě se srazí s učitelem. „Deset minut zpoždění,“ oznámí přísně učitel.", punchline: "Já taky,“ rozzáří se Hurvínek.", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl", "učitel"] },
+            { setup: "Při návštěvě zoo, volá ustrašený pan Spejbl na Hurvínka: „Okamžitě odejdi od toho lva!“ Hurvínek se diví: „A proč?", punchline: "Vždyť já mu nic neudělám.“", tags: ["děti", "hurvínek", "lev", "lidi", "mánička", "rodina", "spejbl"] },
+            { setup: "Hurvínku skloňuj slovo chodit, říká Spejbl. \nChodím……chodíš…….chodí, říká pomalu Hurvínek. \nRychleji Hurvajs!", punchline: "Běžím…..běžíš…..běží, sype ze sebe Hurvínek.", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Hurvínek se vychloubá Spejblovi: „A taťuldo, dneska jsem se jako jediný ve třídě hlásil!“\nSpejbl: „No to je skvělé a na co se paní učitelka ptala?“", punchline: "Hurvínek: „Kdo nemá domácí úkol.“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl", "učitel", "učitelka", "úkol"] },
+            { setup: "Hurvínku, to od tebe nebylo hezké. Mánička upekla bábovku a ty jí za to rozbiješ okno kamenem. To nebyl kámen taťulínku, brání se Hurvínek, to byla ta bábovka.", punchline: "", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Paní učitelko, proč se mým zubům říká mléčné?", punchline: "Protože piješ hodně mléka. Hurvínek se rozzáří. Takže taťulda má pivní zuby.", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl", "tatínek", "učitel", "učitelka"] },
+            { setup: "„Hurvínku, co máš z housky, když ji rozdělíš?“\nHurvínek: „Dvě půlky.“\n„Dobře, a co když ty dvě půlky rozdělíš?“\nHurvínek: „Tak mám čtyři čtvrtky.“\n„Dobře, a co máš, když ty čtyři čtvrtky rozdělíš?“", punchline: "„No přece strouhanku!“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Hurvínek: „Co ti na Hurvínkovi tak vadí, Máničko?“ vyzvídá paní Kateřina. \n„Kouše si nehty.“ \n„No to sice není nic hezkého, ale na druhou stranu, nehty si přeci kouše spousta lidí.“", punchline: "„Ale ne na nohou.“", tags: ["děti", "hurvínek", "mánička", "rodina", "spejbl"] },
+            { setup: "Proč je pizza tak smutná?\nProtože se jí všichni rozdělují!", punchline: "", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "K čemu jsou dobré létající talíře?", punchline: "Nemusí se nosit na stůl.", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "Jak se jmenuje Voldemortův přívrženec, který se zahubil přejídáním?", punchline: "KSMRTIJED", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "Na trhu: Zákazník: „Prosím vás, je ta mrkev geneticky upravovaná?“", punchline: "Mrkev: „Proč se ptáte?“", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "Maminka: „Pepíčku , když Kačenka dostane dostane 24 bonbónů a sní jich 17 , kolik bonbónů jí zůstane?“", punchline: "Pepíček: „24 . Protože kačenky nejí bonbóny.“", tags: ["děti", "jídlo", "maminka", "pepíček", "rodina"] },
+            { setup: "Život je bonboniéra, tlustým lidem dlouho nevydrží.", punchline: "", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "Proč se pomeranč loupe?\nProtože nemá knoflíky, aby se rozepnul.", punchline: "", tags: ["děti", "jídlo", "rodina"] },
+            { setup: "Ptá se učitelka Pepíčka: „Který pták je nejchytřejší?", punchline: "“ „Vlaštovka“ „Proč zrovna vlaštovka?“ „Protože v září, na začátku školního roku, odlétá.“", tags: ["děti", "pepíček", "pták", "rodina", "učitel", "učitelka"] },
+            { setup: "Sedí Janička na posteli a pláče. Přijde k ní maminka a ptá se, co se stalo?\n„Škola nám shořela!“ vzlyká malá dívka.\n„Ale jdi ty, to se jen něco zdálo!“ povzbuzuje ji maminka.", punchline: "„No právě, béééé!“", tags: ["děti", "maminka", "rodina", "škola"] },
+            { setup: "Pepíček se ptá paní učitelky: „Pančelko můžu dostat trest za něco, co jsem neudělal?“\n„Ne, Pepíčku.“", punchline: "„Tak to jsem neudělal domácí úkol.“", tags: ["děti", "pepíček", "rodina", "učitel", "učitelka", "úkol"] },
+            { setup: "Při hodině zeměpisu: „Kde leží Kuba, Romane?”", punchline: "„V posteli, má hrozný kašel!”", tags: ["děti", "nemoc", "rodina", "zeměpis"] },
+            { setup: "Pepíček přijde ze školy a maminka se ho ptá:\nCo jste se dneska naučili ve škole?\nA Pepíček povídá: Počítat do deseti, 1 2 3 4 6 7 8 9.\nA kde je ta pětka?", punchline: "No přece v notýsku!", tags: ["děti", "maminka", "matematika", "pepíček", "pětka", "rodina"] },
+            { setup: "Přijde Pepíček domů a ukáže tátovi žákovskou. Tatínek vidí pětku z matiky, tak Pepíčkovi přiletí pohlavek, další vidí pětku z češtiny tak mu přiletí další pohlavek a poslední vidí jedničku z hudebky tak mu přiletí další pohlavek.\nPepíček: „A ten byl za co?“", punchline: "Tatínek: „Že Ti z těch dvou pětek bylo do zpěvu!“", tags: ["děti", "jednička", "matematika", "pepíček", "pětka", "rodina", "tatínek", "zima", "čeština", "číslo", "škola", "žák"] },
+            { setup: "Tatínek prohlíží žákovskou knížku svého syna a ptá se:\n„Jak je to možné, že ze všech předmětů máš pětky a z dějepisu ne?“", punchline: "„Protože jsem z něj ještě nebyl zkoušený!“", tags: ["dějepis", "děti", "matematika", "pětka", "rodina", "tatínek", "škola", "žák"] },
+            { setup: "Zlobí se Pepíček na dědečka: „Ty nejsi tatínek mého tatínka – paní učitelka říkala, že náš praotec se jmenuje Čech!“", punchline: "", tags: ["děti", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "čeština"] },
+            { setup: "Ve škole: „Jak se nazývá savec, který nemá zuby?“", punchline: "„Dědeček.“", tags: ["dědeček", "děti", "rodina"] },
+            { setup: "Učitelka se ptá žáčka: „Řekni mi zvířátko na P.“ „Potkan.“ „A teď na D.“ „Dva potkani.“ Učitelka zakroutí hlavou: „A na Ž?", punchline: "“ „Že by tři potkani…?“", tags: ["děti", "rodina", "učitel", "učitelka", "žák"] },
+            { setup: "Paní učitelka dává dětem o matematice příklady.\n„Kolik je 7 + 6?“ \n„To je 13,“ odpoví Verunka.\n„Správně, a kolik je 9 + 3?“\n„No přeci 12,“ povídá Kuba.\n„A kolik je 1 + 1?“ zeptá se nakonec Pepíčka, který celou dobu mlčí.", punchline: "Pepíček, který do té doby nedával pozor, hned odpoví: „To je garsonka, paní učitelko!“", tags: ["děti", "matematika", "pepíček", "rodina", "učitel", "učitelka"] },
+            { setup: "„Ty, Terezko, moc zlobíš! Vzpomeň si na Karkulku, co se jí stalo, když neposlouchala.“", punchline: "„A ty si, babi, vzpomeň, koho vlk sežral první…“", tags: ["babička", "děti", "pohádka", "rodina", "vlk"] },
+            { setup: "Přiběhne Honzík k mamince a brečí. „Co se ti stalo?“\n„Tatínek se uhodil kladívkem do prstu.“\n„A ty proto pláčeš?“", punchline: "„No, já jsem se původně smál…“", tags: ["děti", "maminka", "rodina", "tatínek"] },
+            { setup: "Letí dva balonky po poušti a jeden říká: „Pozor kaktussssssss!“", punchline: "„Kde ho vidíšššššššš?“", tags: ["děti", "rodina"] },
+            { setup: "Matka napomíná syna: „Už mockrát jsem ti povídala, že se neříká co, ale prosím.“\n„Za několik minut přijde syn do kuchyně a ptá se: „Prosím děláš, mami?“", punchline: "", tags: ["děti", "rodina"] },
+            { setup: "„Pane doktore, vždy když piju čaj nebo kávu, píchá mě pod levým okem.“ stěžuje si paní Nováková.", punchline: "„Tak si zkuste vyndat ze šálku lžičku.“", tags: ["doktor", "děti", "rodina"] },
+            { setup: "Co se stane ze Sněhurky když spadne do ohně?", punchline: "Popelka.", tags: ["děti", "pohádka", "rodina"] },
+            { setup: "Přijde pán k chlapečkovi a ptá se ho:\n„Nevíš, kde tady bydlí pan Novák?“\n„Vím, pojďte, já vám to ukážu.“\nKdyž vyjdou společně až do osmého patra, chlapeček ukáže na dveře a povídá: „No, tak tady bydlí ten pan Novák, ale jestli s ním chcete mluvit, tak sedí na lavičce před domem.“", punchline: "", tags: ["děti", "lidi", "rodina"] },
+            { setup: "Pacient u lékaře: „Pane doktore, poslední dobou si nic nepamatuji.“\n„A od kdy to pozorujete?“", punchline: "„A co?“", tags: ["doktor", "děti", "rodina", "zima"] },
+            { setup: "„Mami, nemáš náhodou deset korun pro starého a chudého pána?“\n„To je od tebe ale milé. A kdepak je?“", punchline: "„Stojí na rohu a prodává zmrzlinu.“", tags: ["děti", "peníze", "rodina"] },
+            { setup: "Učitel k žákovi: „Kdybys měl sedm jablíček a já tě o dvě poprosil, kolik by ti jich zůstalo?“", punchline: "„Pořád sedm!“", tags: ["děti", "rodina", "učitel", "žák"] },
+            { setup: "V hodině učitelka vykládá látku: „Děti, ví někdo z vás, co je to pštros?", punchline: "“ Ani jeden žák to neví, a tak vysvětluje: „Pštros je taková velká slepice, velká asi jako já.“", tags: ["děti", "hádanka", "rodina", "učitel", "učitelka", "žák"] },
+            { setup: "Muž si nechá zavolat vrchního restaurace a říká mu: „Poslal jsem vám židli.“ „To jste hodný, ale to jste nemusel, my máme židlí dost…“ „To nic, plosím!“", punchline: "", tags: ["děti", "lidi", "rodina"] },
+            { setup: "Čech přijde do čínské restaurace.\nČech: „Tak, co tu máte dobrého?“\nČíňan: „Hadí mozky, psí uši, kočičí ocasy…“\nČech: „Ježkovi voči, to je ale hnus!“", punchline: "Číňan: „Dobrá volba!“", tags: ["děti", "ježek", "rodina", "čeština"] },
+            { setup: "Maminka se ptá staršího syna: Proč nechceš bráškovi půjčit sáňky?", punchline: "Syn odpoví: Já mu je půjčuju. On je má do kopce a já z kopce.", tags: ["maminka", "rodina"] },
+            { setup: "Dědečku, máš ještě všechny zuby?", punchline: "Bohužel, Milánku, už nemám, posteskne si stařec. To je dobře, tak mi tady na chvíli prosím tě podrž čokoládu.", tags: ["rodina"] },
+            { setup: "Holčička udiveně pozoruje maminku, jak si nanáší na obličej pleťovou masku. „Proč to děláš?“ vyzvídá. \n„Abych byla krásná“, odpoví maminka. \nPo chvíli si začne krém stírat.", punchline: "„Co se děje?“ nechápe holčička. „Vzdáváš to?", tags: ["maminka", "rodina"] },
+            { setup: "Syn se ptá tatínka: „Tati, kdy si Indiáni malují obličeje?“ \n„Když se chystají do boje.“", punchline: "„Tak si dej pozor na mámu stojí před zrcadlem a maluje se!“", tags: ["tatínek"] },
+            { setup: "Babička říká vnučce: „Když kašleš, dávej si ruku před pusu.“", punchline: "„Neboj babi, mě zuby nevypadnou.“", tags: ["babička", "rodina"] },
+            { setup: "Několik dní po příjezdu z výměnného pobytu se ptá máma Vojty: „Proč nenapíšeš tomu svému novému kamarádovi z Číny? Copak na něj nemáš e-mail?“", punchline: "„Mám, ale tu adresu bych tam musel naskenovat.“", tags: ["maminka"] },
+            { setup: "Malá Mařenka budí ve tři ráno otce: „Tatínku já chci vidět slonečky.“\n„Teď ne, Mařenko, víš, že teď se musí spinkat.“\n„Ale já chci vidět slonečky!“\n„Už jsem ti přece posledně říkal, že se to nesmí dělat.“\n„Ale já moc, moc chci! Když mě neukážeš slonečky, tak řeknu mamince, že jseš na mě zlej!“\n„No tak tedy dobře. Ale naposled, je ti to jasný!?“", punchline: "Otec jde k telefonu, vytočí číslo a povídá: „Dobrý den, tady plukovník Novák. Vyhlašte 3. rotě chemický poplach.", tags: ["maminka", "pohádka", "slon", "sloní", "tatínek", "zima"] },
+            { setup: "„Maminko, co to nosíš v bříšku?“\n„Miminko.“\n„A máš ho ráda?“\n„To víš, že jo.“", punchline: "„Tak proč jsi ho snědla?“", tags: ["maminka"] },
+            { setup: "Pepíček ve škole tyká paní učitelce, a tak dostane trest. Musí 100krát napsat větu „Nebudu tykat paní učitelce.“ \nNapíše to 200krát a paní učitelka se ho má ptá, proč to udělal. Pepíček jí na to povídá: „Já jsem ti chtěl udělat radost!“", punchline: "", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Malý Pepíček píše Ježíškovi: „Milý Ježíšku, celý rok jsem měl samé jedničky… Ne. To nemůžu napsat.“ A tak píše: „Milý Ježíšku, jelikož jsem byl celý rok hodný… Ne, to taky nemůžu napsat.“ Najednou ho něco napadne. Vyběhne z domu, vběhne do nedalekého kostela, tam vezme sochu Panny Marie, dá si ji do podpaží a běží s ní domů. Tam si sedne ke stolu a píše: „Milý Ježíšku, jestli chceš ještě někdy vidět svoji maminku…“", punchline: "", tags: ["jednička", "maminka", "pepíček", "číslo", "škola"] },
+            { setup: "Pepíček dostane od tety krásné autíčko a maminka mu připomíná: „Co se říká?", punchline: "“ „Nevím!“ „Co říkám tatínkovi, když přinese výplatu?“ „Aha – neříkej, že to je všechno!“", tags: ["maminka", "pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Ve škole se paní učitelka ptá dětí: „Děti, když mám v jedné ruce 6 lahví vína a v druhé 8, co mám?", punchline: "“ Pepíček pohotově zareaguje: „Problém s pitím, paní učitelko!“", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Přijde Pepíček do lékárny a říká: „Máte něco proti bolesti?", punchline: "“ „A co tě bolí?“ „Ještě nic, ale táta si teď prohlíží moje vysvědčení.“", tags: ["nemoc", "pepíček", "tatínek", "vysvědčení", "škola"] },
+            { setup: "Paní učitelka se ptá Pepíčka: „Co je to za zvíře – je hnědé a má čtyři nohy?", punchline: "“ „Pes.“ „No dobře, ale mohla by to být třeba i kočka. A řekni, jakého znáš hnědého ptáka“ „Orel!“ „Dobře, ale mohl by to být i jiný pták. Třeba takový vrabec, ten je taky dohněda.“ „A teď paní učitelko zase vy! Co je to, když se to strká dovnitř, je to tvrdé a suché a když to vyjde ven, tak je to měkké a vlhké…“ Učitelka se neudrží a vlepí Pepíčkovi facku. Pepíček na to: „No, to by taky mohlo být, ale jinak je to žvýkačka!“", tags: ["hádanka", "kočka", "pepíček", "pes", "pták", "učitel", "učitelka", "škola"] },
+            { setup: "Přijde paní učitelka do třídy a ptá se: „Děti, kdo si myslí, že je hloupý, ať si stoupne.“ Všichni sedí, jenom Pepíček se postaví. Paní učitelka se ho ptá: „Pepíčku, ty si myslíš, že jsi hloupý?", punchline: "“ Pepíček: „To ne, ale je mi trapný vás nechat stát samotnou!“", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Přijde Pepíček domů a ukazuje tatínkovi vysvědčení. Tatínek povídá: „Tak hrozné vysvědčení jsem ještě neviděl!“ A Pepíček povídá: „Já také ne, ale včera jsem to našel ve tvých věcech…“", punchline: "", tags: ["pepíček", "rodina", "tatínek", "vysvědčení", "škola"] },
+            { setup: "Jde kolem domu dědeček a vidí Pepíčka, který se snaží dosáhnout na zvonek. A tak se ho zeptá: „Nechceš, abych na ten zvonek zazvonil, chlapečku?", punchline: "“ Pepíček na to: „Tak jo.“ Dědeček zazvonil a Pepíček zakřičí: „A teď zdrháme dědo.“", tags: ["dědeček", "lidi", "pepíček", "rodina", "škola"] },
+            { setup: "V hodině zpěvu vyvolá paní učitelka Pepíčka, aby vyjmenoval bicí nástroje. Pepíček odpoví: „Tak to je rákoska, vařečka a řemen!“", punchline: "", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Maminka jde s Pepíčkem poprvé do zoo. Od první chvíle, kdy tam vejdou, Pepíček nadšeně výská: „Jéé, opička, mamí, koukej, opička!“ „Ticho, Pepíčku, to je teprve paní pokladní!“", punchline: "", tags: ["maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček přijde domů celý nadšený a chlubí se mamince: „Maminko, dnes jsme se ve škole učili o výbušninách!“ Maminka se ptá: „A co se budete ve škole učit zítra?", punchline: "“ Pepíček: „V jaké škole?“", tags: ["maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Pepíček se ptá: „Tatínku, kde má srdíčko nožičky?", punchline: "“ „Žádné nemá, samozřejmě.“ odpoví tatínek, „Jak jsi na to přišel?“ „Já jsem včera slyšel, jak říkáš: Srdíčko, roztáhni nožičky!“", tags: ["pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "„Mamí, upadl nám žebřík,“ říká Pepíček. \n„Tak to řekni tátovi!“", punchline: "„On už to ví, visí na okapu.“", tags: ["maminka", "pepíček", "škola"] },
+            { setup: "Pepíčku, skloňuj slovo chléb.“ „Kdo, co?", punchline: "– Chléb.“ „S kým, s čím? – Se salámem.“", tags: ["pepíček", "škola"] },
+            { setup: "Pepíček: „Můj táta je fakt strašpytel!“ Honzík: „Proč to?", punchline: "“ Pepíček: „Pokaždé, když není mamka doma, spí u sousedky.“", tags: ["pepíček", "tatínek", "škola"] },
+            { setup: "„Pepíčku, proč jsi včera nebyl ve škole?", punchline: "“ „Vy jste říkala že kdo nebude mít domácí úkol tak ať se tady ani neukazuje.“", tags: ["pepíček", "úkol", "škola"] },
+            { setup: "Paní učitelka se ptá Pepíčka: Jaký je čas „slíbuji, slibuje, slibujeme“?", punchline: "A Pepíček odpoví: Prosím, před volbami!", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "„Pepíčku, proč otevíráš olejovky před akváriem?", punchline: "“ Ptá se ho maminka. „Aby rybičky viděly, jak dopadnou, když budou zlobit.“", tags: ["maminka", "pepíček", "rodina", "škola"] },
+            { setup: "Přijde malý Pepíček domů z fotbalu a povídá: „Tatíí dal jsem dva góly!“ „A jak to dopadlo?", punchline: "“ „1:1“", tags: ["fotbal", "pepíček", "tatínek", "škola"] },
+            { setup: "Učitel zadává úkol: Doma vypracujete cvičení 8, 9 a 10. Pepíček si povzdechne: Chudák maminka.", punchline: "", tags: ["maminka", "pepíček", "rodina", "učitel", "úkol", "škola"] },
+            { setup: "Pepíček byl první den ve škole. Další den ráno ho matka budí: „Pepíčku, vstávej, musíš jít do školy!“ – „Cože?", punchline: "Ještě jednou?“", tags: ["pepíček", "škola"] },
+            { setup: "„Proč jsou ryby němé, Pepíčku?", punchline: "“ „Protože nejde mluvit s hlavou pod vodou.“", tags: ["pepíček", "ryba", "škola"] },
+            { setup: "Oznamuje tatínek rodině: „Rodino, těšte se, letos o dovolené poletíme k moři… Proč brečíš, Pepíčku?", punchline: "“ „Já s vámi nemůžu, já ještě neumím létat.“", tags: ["pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Máma: „Pepíčku, proč si do bazénu bereš meloun?“ \nPepíček: „Ale mami, vždyť je vodní.“", punchline: "", tags: ["maminka", "pepíček", "škola"] },
+            { setup: "„Tak cos dneska dělal ve škole, Pepíčku?“ \n„Já o tom nechci mluvit, mami. Večer to stejně uvidíš ve zprávách.“", punchline: "", tags: ["pepíček", "škola"] },
+            { setup: "Paní učitelka napíše ve škole na tabuli příklad 2:2. \nPak se ptá dětí: „Jaký je výsledek?“", punchline: "Přihlásí se Pepíček a povídá: „Vyrovnaný zápas!“", tags: ["pepíček", "učitel", "učitelka", "zima", "škola"] },
+            { setup: "Mami víš kolik pasty je v jedné tubě??\nNe Pepíku kolik???\nOd gauče až k tvýmu stolku ve vaší ložnici!!!!", punchline: "", tags: ["pepíček", "škola"] },
+            { setup: "Pepíček nechce jíst. Matka ho přemlouvá: „Miláčku, budeme si hrát na tramvaj. Ty budeš tramvaj a lžička s polévkou nastupující lidé.“ Pepíček polyká lžičku za lžičkou. Když už je talíř skoro prázdný, volá: „Konečná, všichni vystupovat!“", punchline: "", tags: ["hra", "pepíček", "škola"] },
+            { setup: "Učitelka v hodině matematiky: „Když máte na plotě pět ptáků a jednoho zastřelíte, kolik jich tam zůstane?", punchline: "“ Přihlásí se Pepíček: „Ani jeden. Ti ostatní se leknou a uletí.“ Učitelka přikývne: „Správná odpověď je čtyři, ale tvůj způsob uvažování se mi líbí.“ Pepíček na to: „Paní učitelko, a teď já vám dám jednu otázku. – Tři ženy sedí na lavičce a každá má zmrzlinu. První ji opatrně olizuje z boku, druhá ji cumlá zezhora až ke kornoutu a třetí jemně uhryzává od vršku. Která z nich je vdaná?“ Učitelka se začervená, ale pak odpoví: „Podle mě ta druhá, co si zmrzlinu dává celou do úst.“ Pepíček: „Správná odpověď je ta, která má prstýnek, ale Váš způsob uvažování se mi líbí.“", tags: ["matematika", "pepíček", "pták", "učitel", "učitelka", "škola"] },
+            { setup: "Anička volá Pepíčkovi: „Pepíčku, přijď dneska večer k nám, nikdo nebude doma.“ Pepíček se navoní, učeše, obleče, přijde, zazvoní… A nikdo není doma.", punchline: "", tags: ["pepíček", "škola"] },
+            { setup: "„Můžeš mi říct,“ zlobí se otec, „za co jsi dostal trojku z mravů?“\n„Kouřil jsem na záchodě,“ přiznává se Pepíček.\n„To mi nepovídej, za to jsem já dostal dvojku!“", punchline: "„No jo,“ brání se syn, „ale tys určitě nepozvracel učitelku…“", tags: ["pepíček", "učitel", "učitelka", "číslo", "škola"] },
+            { setup: "Ve škole: „Pepíčku, kdo ti pomáhal s domácím úkolem?", punchline: "“ „Nikdo, paní učitelko.“ „Pepíčku, nelži! Kdo ti pomáhal s domácím úkolem?“ „Tatínek.“ „Tak mu vyřiď, že Wolker byl Jiří a ne Johnnie.“", tags: ["pepíček", "rodina", "tatínek", "učitel", "učitelka", "úkol", "škola"] },
+            { setup: "Pepíček: „Tati, umíš psát potmě?“\nTáta: „Ano, proč?“\nPepíček: „Tak mi prosím podepiš žákovskou knížku.“", punchline: "", tags: ["pepíček", "tatínek", "škola", "žák"] },
+            { setup: "Pepíček koupil babičce k narozeninám pěknou záchodovou štětku. Když k ní později přijel na návštěvu, nikde ji v koupelně neviděl. Tak se babičky zeptal: „Babičko, co se stalo s tou štětkou, co jsem ti dal k narozeninám?", punchline: "“ „Pepíčku, ona mi nevyhovovala. Za ta léta, co už jsem na světě, jsem si totiž zvykla na toaletní papír a tahle nová vymyšlenost strašně škrábala…“", tags: ["babička", "léto", "pepíček", "rodina", "škola"] },
+            { setup: "„Pepíčku, řekni mi dvě zájmena.“\n„Kdo, já?“", punchline: "„Výborně, Pepíčku.“", tags: ["pepíček", "škola"] },
+            { setup: "Pan učitel se ptá Pepíčka: „Když máš v jedné kapse 100kč a v druhé kapse 100kč, co máš?“", punchline: "„Cizí kalhoty,“ odpoví Pepíček.", tags: ["lidi", "pepíček", "učitel", "škola"] },
+            { setup: "Pepíček volá radostně na tatínka:\n„Tati, já už umím psát!“\n„A co jsi napsal?“", punchline: "„To nevím, ještě neumím číst!“", tags: ["děti", "pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Při hodině vysvětluje paní učitelka dětem: Říkáme, že kráva se otelila, kočka okotila, známe nějaké další příklady?", punchline: "Přihlásí se Pepíček a říká: „Prosím Žralok se ožral!“", tags: ["kočka", "kráva", "pepíček", "ryba", "učitel", "učitelka", "škola"] },
+            { setup: "Učitelka vyvolá Pepíčka, aby vyjmenoval čtyři živly. „Zima, voda, oheň a … hospoda!“ zní odpověď. „Proč hospoda?", punchline: "“ ptá se udiveně učitel. „Protože, když otec sedí v hospodě, tak maminka mu potom vždy říká, to si byl zase ve svém živlu!“ odpoví Pepíček.", tags: ["maminka", "pepíček", "rodina", "učitel", "učitelka", "zima", "škola"] },
+            { setup: "„Pepíčku, pročpak jsi přišel pozdě do školy?", punchline: "“ „Protože jedna paní ztratila tisícikorunu.“ „A tys jí pomáhal hledat, viď?“ „Ne, stál jsem na bankovce a čekal, až odejde.“", tags: ["peníze", "pepíček", "zima", "škola"] },
+            { setup: "„Mami, mami, mám dobrou a špatnou zprávu, jakou chceš slyšet první?", punchline: "“ ptá se Pepíček maminky. „Tak tu dobrou.“ „Dostal jsem jedničku z diktátu!“ „To je hezké, Pepíčku a jaká je ta špatná?“ „Že to není pravda!“", tags: ["jednička", "maminka", "pepíček", "číslo", "škola"] },
+            { setup: "Paní učitelka se ptá dětí co dostaly o Vánocích pod stromeček. Vyvolá Pepíčka. Pepíček: Já jsem dostal PSP. Učitelka: To je ta nová hra, že?", punchline: "Pepíček: Ne to jsou ponožky slipy a punčocháče.", tags: ["hra", "pepíček", "strom", "učitel", "učitelka", "vánoce", "škola"] },
+            { setup: "Učitelka se ve škole ptá: „Děti, řekněte mi věc, která se dává do pusy?", punchline: "“ Přihlásí se Janička: „Prosím, chleba s máslem.“ Přihlásí se Petřík: „Čokoláda a bombóny.“ Přihlásí se Pepíček: „Světlo!“ „Světlo…?“ diví se učitelka. „Včera večer jsem se učil a slyšel jsem z ložnice: Zhasni světlo a dej mi ho do pusy.“", tags: ["jídlo", "pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Nechci vás strašit pane učiteli, říká Pepíček pedagogovi, ale tatínek říkal, že jestli nezačnu nosit lepší známky, dostane někdo pěknej výprask.", punchline: "", tags: ["pepíček", "rodina", "tatínek", "učitel", "škola"] },
+            { setup: "Přijde paní učitelka do třídy a ptá se dětí, jestlipak vědí, kdo včera umřel. Přihlásí se Pepíček a povídá: „Tomáš Marný.“ „Jak to víš, Pepíčku?", punchline: "Toho pána neznám.“ „Když jsem šel včera kolem ložnice našich, tak tatínek zrovna povídal mamince: Tomáš marný, ten už nevstane.“", tags: ["maminka", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "škola"] },
+            { setup: "Přijde malý Pepík ze školy domů a povídá:\n„Dostal sem tři pětky.“\n„A z čeho?“ ptá se maminka.", punchline: "„Z ničeho nic.“", tags: ["maminka", "matematika", "pepíček", "pětka", "rodina", "škola"] },
+            { setup: "Učitelka: „Děti, řekněte větu, co začíná slovem já.“\nPepíček: „Já je…“\nUčitelka: „Pepíčku, neříká se já je, ale já jsem.“", punchline: "Pepíček: „Já jsem zájmeno osobní.“", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Učitelka ve škole: „Pepíčku znáš nějakou pranostiku na únor?“\nPepíček se postaví: „Únor bílý, sílí pole.“\nUčitelka: „No sice je to dobře, ale zkus to říct tak, aby se to rýmovalo.“", punchline: "Pepíček: „Únor bílý, sílí pole, pičo, vole!“", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Jde tatínek s malým Pepíčkem na procházku a potkají cizího pána. Pepíček ho vzorně pozdraví, pán odpoví a když zajde, tak se tatínek zvědavě ptá: „Ty toho pána znáš?“\nPepíček odpoví: „Ano, to je pán z ochrany ovzduší.“\nTatínek se ptá: „A jak to víš?“", punchline: "Pepíček: „No, on k nám chodí, vždycky když nejsi doma a ptá se maminky, jestli je čistý vzduch.“", tags: ["lidi", "maminka", "pepíček", "rodina", "tatínek", "škola"] },
+            { setup: "Děti ve škole dostali za úkol říkat přísloví a co z nich vyplývá. Toníček říká, že jeho tatínek pohádal se sousedem a vykopal před domem jámu, ale ráno, když spěchal do práce na ni zapomněl a spadl do ní. Z toho vyplývá, že kdo jinému jámu kopá, sám do ní padá. Mařenka na to, že, když přišla ze školy domů, babička pekla koláče a protože jí nepomohla, žádný nedostala a tedy z toho vyplývá, že bez práce nejsou koláče. Nakonec se přihlásí Pepíček a povídá: „Narodilo se nám miminko a včera, když jsem přišel domů, maminka mu dávala pít z prsu. Z toho vyplývá, že vlk se nažral a koza zůstala celá!“", punchline: "", tags: ["babička", "maminka", "pepíček", "pohádka", "rodina", "tatínek", "vlk", "úkol", "škola"] },
+            { setup: "Tetička přijela k rodině na Vánoce. \nPřed spaním jí malý Pepíček říká: \n„Teto, nezapomeň se v pokoji pořádně zamknout! \n„A proč?“ ptá se tetička.", punchline: "„Protože tatínek říkal, že nám můžeš být ukradená.“", tags: ["pepíček", "rodina", "tatínek", "vánoce", "škola"] },
+            { setup: "Ve škole probírají děti povolání svých tatínků.\nJaroušek říká: „Můj tatínek je pekař.“\nAnička: „Můj tatínek je ředitel.“\nVlastík: „Můj tatínek je doktor.“\nPřihlásí se Pepíček a smutně říká: „Můj tatínek je taxíkář.“\nPaní učitelka se zeptá: „A proč to říkáš tak smutně, Pepíčku, vždyť taxíkář je také užitečné zaměstnání.“", punchline: "Pepíček odpoví: „Když ona si maminka tenkrát zapomněla napsat číslo toho taxíku.“", tags: ["doktor", "maminka", "pepíček", "rodina", "tatínek", "učitel", "učitelka", "ředitel"] },
+            { setup: "Povídá pan učitel Pepíčkovi: „Doufám, že tě už nikdy neuvidím opisovat.“ Pepíček na to: „Já taky doufám.“", punchline: "", tags: ["lidi", "pepíček", "pták", "učitel"] },
+            { setup: "Dává paní učitelka dětem ve škole hádanku „děti myslím si lesní zvířátko, a když přidám písmeno D vyjde mi část lidského těla“ děti dlouho přemýšlí a nakonec se nechají podat „no děti je to přece laň a když přidám D vyjde mi dlaň“ v zadní lavici Pepíček dloubne souseda a říká „sem ti to hned říkal, že kuna to nebude.“", punchline: "", tags: ["pepíček", "učitel", "učitelka"] },
+            { setup: "Jeden říká druhému: „Hele, víš jak jsme ti na střední škole schválně říkali místo Karle Nováku – Narle Kováku?", punchline: "“ „No vím a co s tím?“ „Ty vole, včera jsem potkal maníka a ten se jmenoval Lukáš Šustr.“", tags: [] },
+            { setup: "V ředitelně zvoní telefon: „Prosím pěkně, pane řediteli, můžete dnes omluvit studenta Václavíčka?", punchline: "Leží a nemůže se ani hnout.“ „A kdo volá?“ ptá se ředitel. „Můj otec,“ ozve se nesměle na druhém konci drátů.", tags: ["ředitel"] },
+            { setup: "Malý Pepíček jede se svojí babičkou vlakem na matematickou olympiádu. Cestou se dívá z okna a najednou prohlásí: ,,Babi, koukej, jaká je tam venku nádherná množina kraviček.“ Babička pohlédne z okna a praví: ,,Ale Pepíčku, vždyť na té louce nic není.“ A Pepíček říká: ,,Když ona je to prázdná množina.“", punchline: "", tags: ["babička", "pepíček", "rodina", "vlak"] },
+            { setup: "Sedí takhle vyhladovělí studenti na koleji a fantazírujou: „Co takhle začít chovat prase?", punchline: "“ „Ti hrabe, ne? Co ta špína? A ten smrad?“ „Si zvykne…“", tags: ["prase"] },
+            { setup: "Syn železničáře přijde poprvé ze školy, hodí tašku do kouta a povídá:\n„Pěkný podfuk! Prý první třída a mají tam tvrdý a dřevěný lavice!“", punchline: "", tags: ["škola"] },
+            { setup: "Sedí matfyzák s matfyzačkou na lavičce a zamilovaně se k sobě tulí. Najednou kolem nich projede malý chlapeček na tříkolce. Matfyzačka se otočí na matfyzáka a říká mu: „Myslíš na to co já?", punchline: "“ A on: „Ano.“ A ona: „A kolik ti to vyšlo?“", tags: ["lidi"] },
+            { setup: "V křesťanské škole se ptá učitelka dětí: „Tak děti, dám vám hádanku. Co je to?", punchline: "Skáče to po stromech a žere oříšky. Přihlásí se Lojzík: „Já myslím že veverka, ale jak vás znám tak to bude určitě Ježíš Kristus.“", tags: ["hádanka", "strom", "učitel", "učitelka", "veverka"] },
+            { setup: "Syn na matku: “Mami… děti se mi ve škole smějí, že jsem ještě panic.” “Tak jim dej všem pětky a oni přestanou!”", punchline: "", tags: ["matematika", "pětka"] },
+            { setup: "Nová učitelka zoologie se ptá žáka:\n„Chlapče, jak se jmenuje pták, od kterého je toto vejce?“\n„Nevím.“\n„A tohle?“\n„Nevím.“\n„A toto?“\n„Také nevím.“\n„Špatné, velmi špatné. Jak se jmenuješ?“\nŽák stáhne trenýrky a povídá:", punchline: "„Zkuste to uhádnout podle vajec!“", tags: ["jídlo", "lidi", "pták", "učitel", "učitelka", "žák"] },
+            { setup: "„Vstávej synku, musíš do školy!“ „Maminko, já tam nechci, oni mě tam vůbec neberou, smějí se mi… Opravdu tam musím jít?", punchline: "“ „Musíš, musíš, vždyť jseš učitel.“", tags: ["maminka", "učitel"] },
+            { setup: "„Pane učiteli, jak bude vypadat test?“\n„No… dostanete papíry a tam budou otázky.“", punchline: "", tags: ["učitel"] },
+            { setup: "„Mami, dneska se mě ptala paní učitelka, jestli mám sourozence.“\n„A cos odpověděl?“\n„Že jsem jedináček.“\n„A co na to učitelka?“", punchline: "„CHVÁLABOHU!“", tags: ["učitel", "učitelka"] },
+            { setup: "„Pane učiteli, jaký je váš názor na studentky, které si malují oči?", punchline: "“ Ale vcelku kladný. Ty děvuchy vůbec nebrečí, když dostanou špatnou známku.“", tags: ["učitel"] },
+            { setup: "Přijde za paní učitelkou chlapec z třetí třídy a říká: „Paní učitelko, nechoďte prosím do lesa, sežerou vás tam.“\nUčitelka jen zakýve hlavou a nevšímá si ho.\nZa chvíli přijde chlapec znova a říká: „Paní učitelko, nechoďte prosím do lesa, sežerou vás tam.“\nUčitelka nevydrží a zeptá se: „A proč bych se jako měla bát?“\nChlapec odpovídá: „Protože jsem slyšel toho nového tělocvikáře s panem fyzikářem, jak si říkají, Pane kolego, tu novou kolegyni tak dostat do lesa, to by bylo žrádlo, co?“", punchline: "", tags: ["lidi", "učitel", "učitelka"] },
+            { setup: "Poznámka: Svačí cibuli a obtěžuje zápachem.", punchline: "", tags: ["perlička", "škola"] },
+            { setup: "Poznámka: Když jsem vašeho syna vyvolala k tabuli, opáčil mi: „Piš pět, svačím!“", punchline: "", tags: ["perlička", "škola"] },
+            { setup: "Poznámka: Neustále lítá po třídě a posedává na oknech.", punchline: "Odpověd: Tomu nevěřím. Holub", tags: ["perlička", "pták", "škola"] },
+            { setup: "Poznámka: O každé přestávce poskakuje z lavice na lavici a usmívá se.\nOdpověd: Tak jak je možné, že má dvojku z tělocviku?", punchline: "", tags: ["perlička", "číslo", "škola"] },
+            { setup: "Jaká jsou nejčastější zranění při požáru základní školy?", punchline: "Popáleniny prvního a druhého stupně..", tags: ["perlička", "škola"] },
+            { setup: "Učitel se ptá Ondry: „Proč jsou ryby němé, Ondro?“ \n„Protože nejde mluvit s hlavou pod vodou!“", punchline: "", tags: ["perlička", "ryba", "učitel", "škola"] },
+            { setup: "V mateřské školce:\n„Jak dělá pejsek, Honzíku?“\n„Haf.“\n„Mařenko, jak dělá kočička?“\n„Mňau.“\n„Jiříčku, jak dělá žabička?“\n„Kvák.“\n„Tomáši, jak dělá myš?“", punchline: "„Klik, paní učitelko.“", tags: ["kočka", "myš", "perlička", "pes", "učitel", "učitelka", "škola"] },
+            { setup: "Sousedka se ptá malého Toníka, který právě začal chodit do první třídy: „Co je tvůj nejoblíbenější předmět ve škole?", punchline: "“ „Asi zvonek, paní Nováková.“", tags: ["perlička", "škola"] },
+            { setup: "On-line vyučování připomíná spirituální seanci.\nUčitelka se ptá: „Maruško, jsi tu s námi? Jestli nás slyšíš, odpověz!“", punchline: "", tags: ["učitel", "učitelka"] },
+            { setup: "Při hodině; \n„Hej, Franto, sundej si ty sluchátka,“ píše Karel spolužákovi. \n„Proč, děje se něco?“ odepisuje Franta", punchline: "„Řve po tobě učitelka!“", tags: ["učitel", "učitelka", "žák"] },
+            { setup: "„Blíží se období třídních schůzek. Jsem fakt zvědavá, jestli se učitelé přijdou zeptat, jak se dětem daří.“", punchline: "", tags: ["učitel"] },
+            { setup: "Učitelka volá jednomu z rodičů. „Dobrý den, Váš syn neustále lže.“ Otec na to: „No, tak to je v tom fakt dobrej, protože já žádného syna nemám.“", punchline: "", tags: ["učitel", "učitelka"] },
+            { setup: "Petříkův tatínek zaklepe u souseda: „Tak jakpak, sousede, už jste udělal synovi úkol z matematiky?", punchline: "“ „Ano.“ „A nedal byste mi ho, prosím, opsat?“", tags: ["matematika", "rodina", "tatínek", "úkol"] },
+            { setup: "Táta říká dceři: „Jestli zítra dostaneš z té písemky horší známku než jedničku, zapomeň, že jsem tvůj otec.“ Druhý den se otec ptá: „Tak co jsi dostala z té písemky?", punchline: "“ Dcera po chvilce odpoví: „A ty jsi kdo?“", tags: ["jednička", "rodina", "tatínek", "číslo"] },
+            { setup: "Matka telefonuje učitelce: „Prosím Vás, nedávejte dětem úkoly z matematiky, ve kterých stojí láhev piva 1,80 Kč. Manžel nemohl celou noc usnout!“", punchline: "", tags: ["matematika", "učitel", "úkol"] },
+            { setup: "Matka: „Dokud nenapíše úkoly, nedostaneš večeři.“", punchline: "", tags: ["úkol"] },
+            { setup: "Pepíček: „A co je k večeři?“", punchline: "", tags: ["pepíček"] },
+            { setup: "Dva vysokoškoláci se baví: „Ty vole, když si uvědomím, jakej já jsem inženýr, tak mám normálně strach jít k doktorovi!“", punchline: "", tags: ["doktor"] },
+            { setup: "„Slyšela jsem, že váš syn studuje na univerzitě. Co z něho bude, až skončí ?", punchline: "“, ptá se známá paní Novákové. „Obávám se, že důchodce.“", tags: [] },
+            { setup: "Matfyzák na brigádě:\nHost: „Dobrý den, chtěl bych si u vás rezervovat stůl pro tři, na osmou.“ \nStudent: „Tři na osmou? Myslíte si, že tu máme stůl pro šest a půl tisíce lidí?“", punchline: "", tags: [] },
+            { setup: "Oznámení na vrátnici internátu: Prosíme studenty, aby z okna nevyhazovali odpadky. Malé děti je sbírají a nafukují.", punchline: "", tags: [] },
+            { setup: "Studentka medicíny předvádí na maketě porod kleštěmi. Doktor ji chvilku pozoruje a pak povídá: „No výborně, ještě těma kleštěma švihněte otce přes hlavu a vyvraždila jste kompletně celou rodinu.“", punchline: "", tags: ["doktor"] },
+            { setup: "Vědci z Pekingu dělají výzkum za jak dlouho je student schopen naučit se čínsky. Přijedou do harvardské knihovny, předloží studentovi 10cm širokou knížku s čínskou gramatikou a zeptají se ho, za jak dlouho by se ji zvládl naučit. Student vzhlédne od skript, přejede knihu pohledem a povídá:\n„Za rok.“\nJedou tedy na Oxford, vyhledají nejlepšího studenta a položí mu tutéž otázku.\n„Bude to natěsno, ale ……za půl roku,“ zní odpověď.\nPak jedou do České republiky do Liberce na Technickou univerzitu. Tam sedí v menze student a lžící se znuděně rejpe v hrachové kaši.\n„Jak dlouho by Vám trvalo naučit se čínsky?“ ptají se vědci.\nStudent vzhlédne od stolu a ptá se: „A jsou na to nějaký skripta?“\n„Ano, tady“ a ukážou mu deseticentimetrový svazek.", punchline: "Student palcem projede hřbet stránek, zapíchne lžičku do kaše a povzdychne si: „Doprdele, to zas bude noc“ …", tags: ["zima"] },
+            { setup: "Krásná studentka u profesora v kabinetu.\n„Věřte mi, jsem schopná udělat cokoliv proto, abych tuto zkoušku udělala. Mám na mysli všechno…“\nProfesor se k ní přikloní blíž. „Vážně všechno?“\nStudentka se mu zahledí zpříma do očí. „Ano, všechno…“", punchline: "„Tak skvělé, tak se to koukej naučit!“", tags: ["zima"] },
+            { setup: "Včera jsem byl na zajímavé přednášce o kleptomanii. Musím říct, že jsem si z ní hodně odnesl.", punchline: "", tags: [] },
+            { setup: "Studenti medicíny mají přednášku o rozmnožování.\nProfesor vykládá: „Kupříkladu takový býk zvládne tento akt i třicetkrát za den.“\nZ první řady se ozve studentka: „Třicetkrát?! Mohl byste to prosím zopakovat, aby to slyšeli i ti, kteří sedí vzadu?“\nPřednášející tedy zopakuje hlasitěji: „Býk zvládá tento akt i třicetkrát za den.“\nV poslední řadě se zvedne student: „Prosím Vás, a to ho připouštějí stále na tu stejnou samici?“\n„Ne, to samozřejmě ne, pokaždé na jinou“, odpoví profesor.", punchline: "„A mohl byste to zopakovat, aby to slyšely i studentky v první řadě?“", tags: ["kráva", "zima"] },
+            { setup: "První den školního roku má děkan proslov k nováčkům. Seznamuje je také s kolejním řádem. Dívčí pokoje jsou pro studenty tabu a naopak. Kdo bude přistižen při porušení tohoto zákazu, zaplatí pokutu 500 Kč. Při druhém přestupku se pokuta zvyšuje na 2000 Kč, při třetím na 5000 Kč.\n„Jsou nějaké dotazy?“", punchline: "Z davu se ozve: „Kolik stojí permanentka?“", tags: [] },
+            { setup: "Čtyři studenti se před zkouškou vydali na chatu na chlastačku. Samozřejmě přípravu na zkoušku podcenili. V pondělí ráno před zkouškou chtěli zachránit to, co se ještě dalo. Zavolali tedy profesorovi s omluvou, že u auta píchli kolo, mají defekt, a asi nestihnou zkoušku.\nProfesor, správný člověk, jim vyhověl a zkoušku o dva dny odložil.\nStudenti se na posunutý termín připravili vzorně.\nProfesor je rozsadil do 4 místností a rozdal jim zadání se dvěma otázkami. První, za 10 bodů, byla z učiva a byla jednoduchá. Druhá, za 90 bodů, zněla: Které kolo?", punchline: "", tags: [] },
+            { setup: "Student dutý jak bambus, propadá u zkoušky z „logiky a organizace“.\nStudent: „Vy mě tady dusíte a rozumíte vůbec tomu oboru?“\nProfesor: „Jistě, jinak bych nebyl profesor!“\nStudent: „Mohu Vám tedy dát jednu otázku? Když mi na ni správně odpovíte, dejte mi nedostatečnou a já odejdu. Když ale nebudete znát odpověď, dáte mi za jedna.\nProfesor: „Souhlasím.“\nStudent: „Co je současně legální,ale nelogické, logické ale nelegální a co není ani logické ani legální?“\nProfesor po dlouhém přemýšlení nezná správnou odpověď a tak dá studentovi výbornou.\nIhned poté volá svému nejlepšímu studentovi a položí mu tu samou otázku.\nNejlepší student mu okamžitě odpoví: „Vám je 63 let a jste ženatý s 35-ti letou ženou, což je legální ale nelogické. Vaše žena má 25-ti letého milence, což je logické ale nelegální. Vy dáte tomu milenci své ženy za jedna ze zkoušky, přestože by měl vyletět; a to není ani logické ani legální.\nZ čehož se dá logicky vyvodit: Je legální, že sedíme v práci, ale nelogické, že při tom pracujeme. Je logické, že si posíláme soukromé e-maily, ale není to legální. A legální, natož pak logické není, že jsme za to ještě placeni.", punchline: "", tags: [] },
+            { setup: "Profesor se špatně vyspal. Ptá se prvního studenta: „Jedete autobusem a je hrozné horko, co uděláte?“\n„Otevřu okno“\n„Dobře, a teď popište aerodynamické změny, které v autobuse nastanou.“ „?“\n„Děkuji, za pět, další!“ Druhý student stejná otázka, stejná odpověď, stejná známka. Za hodinu je stav zápasu profesor versus studenti 9 : 0. Jako desátá vchází pěkná studentka. Profesor se ptá……: „Jedete autobusem a je hrozné horko, co uděláte?“\n„Vysvleču si halenku.“\n„Vy mi nerozumíte, je opravdu horko.“\n„Tak si ještě vysvleču sukni.“\n„Je nesnesitelné horko“ stupňuje profesor.\n„Tak si vysvleču podprsenku.“ To profesorovi vyrazilo dech.", punchline: "Studentka dodává: „Ještě si můžu vysléct kalhotky, ale to okno neotevřu!“", tags: [] },
+            { setup: "Student konzervatoře studoval skladbu. Blížily se mu závěrečné zkoušky\na on musel odevzdat své dílo. Jenže ho pořád nic kloudného nenapadalo.\nKamarád z vyššího ročníku mu poradil:\n„Vem skladbu svého profesora a přepiš ji pozpátku. Nikdo nic nepozná.“", punchline: "„Hm, to už jsem zkoušel a vyšla mi z toho Novosvětská.“", tags: [] },
+            { setup: "Mladý potomek vévodského rodu se pokouší stát se námořním důstojníkem. Při jedné plavbě dostane za úkol vypočítat na širém oceáně polohu lodi. Když odevzdá svůj výpočet zkoušejícímu, obrátí se korvetní kapitán ke skupině aspirantů a řekne:\n„Smekněte, pánové!“\nVšichni hned uposlechnou, ale přece jen se dívají na kapitána tázavě. Ten jim svůj rozkaz vzápětí vysvětlí:", punchline: "„Podle výpočtů tohoto pána totiž právě proplouváme westminsterskou katedrálou.“", tags: ["úkol"] },
+            { setup: "Paní učitelka má zapisovat od pondělí do pátku kdo chybí,potom příjde pan ředitel a řekne paní učitelce,aby mu přečetla příjmení kdo všechno chyběl.Paní učitelka spustí:Malý Zajíc Vyskočil, Velký Bobek Vytlačil.“", punchline: "", tags: ["lidi", "pták", "učitel", "učitelka", "zajíc", "ředitel", "škola"] },
+            { setup: "Děti na prvním stupni mají vlastivědu a pani učitelka se zeptá?", punchline: "Děti povězte mi co všechno má nožičky. Děti se hlásí, jmenují zvířátka která mají nožičky a pak se přihlásí Pepíček a pronese: Srdíčko má nožičky. Učitelka se ho zeptá jak na to přišel a Pepík odpoví: Nedávno jsem šel v noci na záchod a slyším taťku jak říká: No tak srdíčko roztáhni už ty nožičky.", tags: ["pepíček", "učitel", "učitelka", "škola"] },
+            { setup: "Učitel vykládá svým studentům o dobrých mravech a ptá se jednoho po druhém:\n„Tak Michaeli, kdybyste byl na schůzce s děvčetem a seděli byste v restauraci, jak byste jí řekl, že potřebujete na toaletu?”\n„No tak já bych jí řekl: Počkej, musím se jít vyčůrat.”\n„No, to by ale bylo velice nezdvořilé, řekl bych i hrubé, že? Co vy Honzo, co byste řekl vy?”\n„No, tak já bych řekl: Omlouvám se, ale opravdu musím na záchod.”\n„Tak to už je o hodně lepší, ale přece jen není vhodné používat slovo záchod u stolu, že? A co vy Petře, jak byste se zachoval vy?”\n„Řekl bych: Miláčku, prosím tě, můžeš mě na chvilku omluvit? Musím si jít potřást rukou se svým velice dobrým přítelem, se kterým se, jak doufám, po večeři seznámíš.”", punchline: "", tags: ["učitel", "škola"] },
+            { setup: "„Jeníku, skloňuj slovo chléb.“ „Kdo, co?", punchline: "– Chléb.“ „S kým, s čím? – Se salámem.“ „Komu, čemu? – Mně.“", tags: ["škola"] },
+            { setup: "„Mami, zejtra máme zkoušku ze zeměpisu.\n“ Můžeš mě vyzkoušet?“\n„To víš že jo.\n„Jaký je hlavní město Německa?“\n„Berlín.“\n„A jaký je hlavní město Francie?“\n„Berlín.“\n„A jaký je hlavní město Velký Británie?“\n„Berlín.“", punchline: "„Moc hezky ses to naučil, Adolfku.“", tags: ["zeměpis", "škola"] },
+            { setup: "Paní učitelka na základní škole probírá s žáky občanskou výchovu a vysvětluje, co to jsou národnosti a co to znamená být Čechem.\nPoté žáky vyzve, ať zvednou ruce, jestli jsou také Češi.\nDěti, i když tomu příliš nerozumějí, všechny zvednou poslušně ruce.\nJen holčička v poslední řadě neudělá nic.\n„Copak je, Alenko, proč jsi nezvedla ruku?“ ptá se učitelka.\n„Protože nésu Češka,“ odpoví samozřejmě holčička.\n„A co tedy jsi?“\n„Su hrdá Moravanka.“\nUčitelka se zatváří nazlobeně, že jí někdo odporuje, a zeptá se:\n„Proč si o sobě myslíš, že jsi Moravanka a ne Češka.“\n„No moja maminka je Moravanka i můj tatínek je Moravan. Tak su i já Moravanka.“\nTo učitelku dopálí.\n„To přece není důvod! Co kdyby tvůj tatínek byl vůl a tvá maminka byla kráva, pak bys byla co?“\nHolčička se zamyslí a usměje se.", punchline: "„Potom bych byla Češka.“", tags: ["hádanka", "kráva", "maminka", "rodina", "tatínek", "učitel", "učitelka", "zima", "čeština", "škola", "žák"] },
+            { setup: "Chucku Norrisovi se jednou při seskoku z letadla neotevřel padák. Hned druhý den ho šel reklamovat.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Abraham Bell vynalezl telefon zjistil, že má 2 zmeškané hovory od Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je první člověk, který porazil betonovou zeď v tenise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou kopl koně do brady. Jeho potomci jsou dnes známí jako žirafy!", punchline: "", tags: ["chuck norris", "kůň"] },
+            { setup: "Chucka Norrise uštkla kobra královská. Po 5 dnech strašlivých bolestí ta kobra zemřela.", punchline: "", tags: ["chuck norris", "nemoc"] },
+            { setup: "Když jde Bubák spát, každý večer se podívá pod postel jestli tam není Chuck Norris.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se jednou vzbudil tak rychle, že přistihl sám sebe, jak spí.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Mark Zuckerberg byl včera hospitalizován s těžkými pohmožděninami a tříštivou zloměninou stehení kosti. Předběžné zprávy hovoří o tom, že jej Chuck Norris šťouchnul na Facebooku.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris už je deset let po smrti, ale smrt se mu to neodváží říct.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže sníst polévku vidličkou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže rozbrečet cibuli.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris hodil granát, zabil tím 50 vojáků, poté granát explodoval.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou přežil sebevražedný atentát. On byl atentátník.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže ve vodě oschnout.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je častým dárcem krve pro Červený kříž. Jen ne svojí vlastní!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže dát mat bez jediného tahu!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí prásknout otáčivými dveřmi.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže vyhrát hru Dostihy a sázky aniž by vlastnil jediného koně.", punchline: "", tags: ["chuck norris", "hra", "kůň"] },
+            { setup: "Chuck Norris umí dělat kliky bez rukou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou skákal s padákem, ale slíbil, že už to nikdy neudělá. Jeden Grand Kaňon stačí.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris hrál ruskou ruletu s plně nabitou zbraní, začínal, a vyhrál.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Co prošlo hlavou všech Chuckových obětí, než zemřely?", punchline: "Jeho bota.", tags: ["chuck norris"] },
+            { setup: "Když byl Chuck Norris ještě bakterie porazil Domestos.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Původní příběh Pána Prstenů měl Chucka Norrise místo Froda Pytlíka. Byl jen pět stran dlouhý, protože Chuck Norris vyřídil Saurona v polovině první kapitoly!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Čas na nikoho nečeká… pokud to není Chuck Norris.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Kalendář Chucka Norrise po 31. březnu pokračuje přímo na 2. duben, protože z Chucka si nikdo apríl dělat nebude.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Bůh chtěl stvořit Zemi. Chuck Norris řekl: „Můžeš“.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Bůh chtěl stvořit svět za 12 dní… Chuck Norris mu dal jen 6.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris doma neuklízí. Špína se bojí překročit práh jeho domu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris ti při páce dokáže zlomit nohu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Nikdo není dokonalý. Kromě Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris ví, jak vypadá paní Columbová.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris rychleji sedí, než ty běžíš.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Teprve Chuck Norris naučil šmirglpapír, jak bejt drsnej!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se narodil dříve než jeho otec.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris vyhrál závod 24 hodin v Le Mans za 12 hodin.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se opřel o věž v Pise, naštěstí jen na tisícinu vteřiny.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je o 3 vteřiny starší než vesmír.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže dehydratovat vodu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris si umí vyndat čočky i se zavřenýma očima.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Lidi nosí triko se Supermanem, Superman nosí triko s Chuckem Norrisem.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris utopil kapra ve vodě.", punchline: "", tags: ["chuck norris", "ryba"] },
+            { setup: "Chuck Norris byl kdysi vrchní vyjednávač pro FBI. Jeho práce spočívala v tom, že zavolal telefonem kriminálníkovi a řekl: „Tady Chuck Norris.“", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris naučil Lennona na kytaru.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris při inkognito návštěvě Prahy použil taxi, vylekal taxametr tolik, že mu řidič vrátil osm tisíc.", punchline: "", tags: ["auto", "chuck norris"] },
+            { setup: "Chuck Norris dokáže předběhnout svůj vlastní stín. I ve tmě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris naučil cigarety zabíjet.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Tam, kde se objeví Chuck Norris, jsou vám i zadní vrátka k ničemu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí mluvit Braillovým písmem.", punchline: "", tags: ["chuck norris"] },
+            { setup: "USA by ušetřily miliardy dolarů, kdyby si místo armády najaly Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nikdy nedostane infarkt. Jeho srdce není tak blbý, aby si na něj dovolilo zaútočit.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Já si stejně myslím, že všechny ty hlášky o Chuckovi Norrisovi jsou blbosti, protože kdyby to byla pravda, tak sem teď přijde a začne mi mlátit hlavou o klávesniclkjhkdhfu oiusakšnakvi oiqčwutjhgkla éířýáuwioi sdf", punchline: "", tags: ["chuck norris", "počítač"] },
+            { setup: "Na Chucka Norrise spadla atomová bomba. Od té doby je trochu opálený.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris musí využívat dabléra pro záběry, ve kterých pláče.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris musel přestat prát své prádlo v oceánu. Tsunami zabíjelo lidi.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je jediný, kdo ví, co dnes dělá Jára Cimrman.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nemá nikdy prázdný zásobník, protože se mu to zásobník bojí říct.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže dojet metrem z Hájí na Dejvickou bez přestupu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Nejlepší vtipy o Chucku Norrisovi vymýšlí sám Chuck Norris!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je schopen fotosyntézy bez použití chlorofylu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris hraje Monopoly, ovlivňuje to světovou ekonomiku!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris přesně ví, jak skončí seriál Ordinace v Růžové zahradě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Vlna tsunami v Japonsku?", punchline: "Nikoli. To jen Chuck Norris si šel zaplavat.", tags: ["chuck norris"] },
+            { setup: "Rychlejší než svištící kulka…silnější než lokomotiva…schopný přeskakovat výškové budovy na jeden odraz…ano, toto jsou některé zahřívací cviky Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže zneškodnit bombu i po výbuchu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jen Chuck Norris vás dokáže uškrtit bezdrátovou myší.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dal kyklopovi ránu pěstí mezi oči.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris naučil šmirgl, jak být drsným.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jedině Chuck Norris dokáže dojet na kruháku až na konec.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nikdy nechodí k zubaři, protože jeho zuby jsou nezničitelné. Ani jeho nepřátelé nikdy nechodí k zubaři, protože nemají žádné zuby.", punchline: "", tags: ["chuck norris", "doktor"] },
+            { setup: "Chuck Norris se kvalifikoval do závodů Daytona 500 maximální rychlostí 324 mil za hodinu. Bez auta.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když se Vám zdá sen o Chucku Norrisovi, už se neprobudíte.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí plavat ve vzduchu a létat ve vodě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Edison vymyslel žárovku, Chuck Norris už používal úsporné.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když se Chuck Norris špatně podívá na hvězdu, tak se z ní stane černá díra.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris může za velké stěhování národů. Národy prchaly před ním.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nejenže dokáže přeskočit svůj stín, ale umí ho i sloupnout ze země a přibít na dveře.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris dělá shyby na hrazdě, nezvedá se. Stahuje zeměkouli dolů.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže vysypat prázdný koš.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokázal, že jsme ve vesmíru sami. Před jeho první vesmírnou expedicí jsme nebyli.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris neslaví Vánoce, Vánoce slaví Chucka Norrise.", punchline: "", tags: ["chuck norris", "vánoce"] },
+            { setup: "Myslíte si, že mátě hodně problémů?", punchline: "Dokud nenaštvete Chucka Norrise, nevíte, co je to opravdový problém.", tags: ["chuck norris", "hádanka"] },
+            { setup: "Chuck Norris jednou přišel o hlavu. Léčil se z toho tři dny.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Někteří lidé mají jednu mozkovou hemisféru větší než druhou, Chuck Norris má větší obě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže udělat jedinou ranou z velblouda komára.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Víte, proč má Chuck Norris plnovous?", punchline: "Protože žádná žiletka není tak ostrá.", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nemusí chodit do kostela, on věří v sám sebe.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nepotřebuje klávesnici a myš. Počítač ho poslouchá na slovo.", punchline: "", tags: ["chuck norris", "myš", "počítač"] },
+            { setup: "Kolik Chucků Norrisů je potřeba k výměně žárovky?", punchline: "Špatná otázka! Správně je: Kolik žárovek je potřeba k výměně Chucka Norrise?", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dal hattrick. Z trestné lavice!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se dokáže na jedno nadechnutí potopit na dno Mariánského příkopu!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris vynalezl všechna písmena abecedy.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se nemá rád, protože vždycky bojoval proti zbraním hromadného ničení.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris zabije nepřítele, i když míří na druhou stranu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Bermudský trojúhelník byl původně Bermudský čtverec, to bylo předtím, než mu Chuck Norris ukopl jeden roh!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Bin Ládin se ve skutečnosti neschovával před americkou armádou, ale před Chuckem Norrisem.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Binární kód počítače obsahuje jedničky a nuly. Binární kód Chuck Norrisova mozku obsahuje pouze jedničky.", punchline: "", tags: ["chuck norris", "jednička", "počítač", "pták", "číslo"] },
+            { setup: "Blesk nikdy neudeří dvakrát do stejného místa, protože ví, že ho Chuck Norris hledá.", punchline: "", tags: ["chuck norris", "zima"] },
+            { setup: "Chuck Norris je tak rychlý, že dokáže oběhnout Zemi a udeřit se do zad.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže pálit mravence lupou. V noci.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Byl překonán rychlostní rekord automobilů. Neznámý pražský důchodce nemohl nastartovat svého Favorita, a proto požádal kolem procházejícího Chucka Norrise, zda by ho roztlačil!", punchline: "", tags: ["auto", "chuck norris"] },
+            { setup: "Chuck Norris dokáže bodnout vosu. Jejím vlastním žihadlem!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Co si řekne Chuck Norris pokaždé, když se podívá do zrcadla?", punchline: "„Sakra, takhle bych chtěl vypadat!“.", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou navštívil Panenské ostrovy. Od té doby se jmenují Ostrovy.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jako jediné miminko na světě oznámil ihned po porodu svým rodičům, jak se bude jmenovat.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže udělat druhý nálev z instantní kávy!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris sestřelil Boeing 747 ve výšce 12 000 m, vzduchovkou, bez diabolek a z podzemní garáže.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Byl objasněn způsob vzniku hurikánů – Chuck Norris si také občas potřebuje kýchnout!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je vegetarián. To znamená, že zvíře nesní, dokud ho pomocí svých pěstí nenavrátí do vegetativního stavu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Dokud bude Chuck Norris málo prdět, budou zdražovat plyn.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chemický vzorec pro vysoce jedovatý kyanid je CN – to jsou také Chuckovy iniciály. To není náhoda.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je zodpovědný za přelidnění Číny. Hostoval na Karate turnaji v Pekingu a všechny ženy v okruhu 1000 mil náhle otěhotněly.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris je jediný člověk, který dokáže poslat e-mailem kop z otočky.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Co se stane, když do Chucka Norrise narazí na cestě ve velké rychlosti kamion?", punchline: "Chuck Norris zavolá hasiče a sám začne s vyprošťováním řidiče.", tags: ["auto", "chuck norris"] },
+            { setup: "Chuck Norris dostal řidičský průkaz ve věku 16… Sekund.", punchline: "", tags: ["auto", "chuck norris"] },
+            { setup: "Chuck Norris dokáže hranou ruky řezat diamanty!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže jednoho člověka zabít několikrát!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Plno lidí se bojí vyslovit jméno Lord Voldemord. Lord Voldemord se bojí vyslovit jméno Chuck Norris.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se nikdy na nic neptá. Pokud něco neví, potom je to nepodstatné.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Fotbalové družstvo, ve kterém hrál Chuck Norris, vyhrálo dvakrát v jednom zápase.", punchline: "", tags: ["chuck norris", "fotbal"] },
+            { setup: "Chuck Norris dokáže chytat do lasa bez smyčky!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Hlavní příčiny smrti v USA jsou: 1. Onemocnění srdce v důsledku spatření Chucka Norrise, 2. Chuck Norris, 3. Rakovina.", punchline: "", tags: ["chuck norris", "nemoc", "zima"] },
+            { setup: "Říká se, že Chuck Norris nikdy nepoznal bolest. To bolest poznala Chucka Norrise.", punchline: "", tags: ["chuck norris", "nemoc"] },
+            { setup: "Chuck Norris hraje tenis s opékačem topinek a bowlingovou koulí.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Dinosauři vymřeli kvůli ChuckNorrisaurovi.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou probodl muže Eiffelovou věží.", punchline: "", tags: ["chuck norris", "lidi"] },
+            { setup: "Chuck Norris jednou navštívil Safari. Zvířata se naučila řídit džípy, aby se na něj mohla přijet podívat.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou nakopl podomního prodavače. Po telefonu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí mlčet nahlas.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže dát mat i dámě!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Godzilla je demoverzí návštěvy Chuck Norrise v Tokiu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris otočí volant na dvě strany najednou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris má dvanáct měsíců. Jedním z nich je Země.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí zabíjet pohledem. I z obrázku.", punchline: "", tags: ["chuck norris", "zima"] },
+            { setup: "Chuck Norris se jednou vymočil do moře. Následkům říkají lidé Golfský proud. Mimochodem, moře pak trochu zeslaňelo!", punchline: "", tags: ["chuck norris", "zima"] },
+            { setup: "Chuck Norris napočítal do nekonečna. Dvakrát. A podruhé ještě mnohem dál!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris spí s polštářem pod pistolí!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris přinutí vodu téct do kopce.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Kdo jinému jámu kopá, je u Chucka na brigádě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou snědl celou krabici pilulek na spaní. Způsobily, že mrkl.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když je Chuck Norris šílený, nezabije každého. Někteří uniknou. Jmenují se astronauti.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris si sám ušil klobouk, tak že se výhružně podíval na nit s látkou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris zničil periodickou tabulku prvků, protože uznává pouze prvek překvapení!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Kosmonauti viděli z měsíce čínskou zeď. Chuck Norris vidí z měsíce i svůj dům.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jak dosvědčuje NASA, Chuck Norris je jediným člověkem, který je pouhým okem viditelný z vesmíru.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jednou si Chuck Norris vzal dovolenou. Toto období se označuje jako velká hospodářská krize.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris zná poslední číslici čísla pí.", punchline: "", tags: ["chuck norris", "zima"] },
+            { setup: "Chuck Norris umí sáňkovat do kopce.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když je Chuck Norris připraven vstát, řekne slunci, aby vyšlo.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Ježíš dokáže chodit po vodě, ale Chuck Norris dokáže plavat pevninou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris musí třídit prádlo na tři hromady – bílé, barevné a krvavé!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Z věznice Alcatraz dokázal utéct jediný vězeň. Proč?", punchline: "Protože zjistil, že bude sdílet celu s Chuckem Norrisem.", tags: ["chuck norris"] },
+            { setup: "Chuck Norris uvařil vodu v elektrické konvici, kterou předtím někdo omylem vytáhnul ze zásuvky.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jestli chcete seznam Chuckových nepřátel, stačí se podívat na seznam ohrožených druhů.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris občas nechá otevřená dvířka od své ledničky. Této události se říká doba ledová.", punchline: "", tags: ["chuck norris", "zima"] },
+            { setup: "Jen Chuck Norris dokáže splnit tři přání zlaté rybce.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jak dlouho vydrží Chuck Norris pod vodou bez dýchacího přístroje?", punchline: "Přesně tak dlouho, jak potřebuje.", tags: ["chuck norris"] },
+            { setup: "Chuck Norris objel zeměkouli na rotopedu!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Měsíc je jen kometa, která se kdysi měla střetnout se Zemí. Ale Chuck Norris ji odkopl na oběžnou dráhu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris procházel se sekerou místem zvaném Velký africký les, kde ho škrábla větvička. Dnes je toto místo známé jako Sahara.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí poponést židli, na které sedí.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nečte knihy, jen je pořádně zmáčkne a dostane z nich informace, které potřebuje!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris se ve svém životě lekl pouze jednou. Když viděl svůj odraz v zrcadle.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když se říká „nikdo není dokonalý“, Chuck Norris to považuje za osobní urážku!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Krevní skupina Chucka Norrise je AK-47.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris pije na pálení žáhy napalm.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí dělit nulou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris zabil Mrtvé moře.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když jde Chuck Norris darovat krev, odmítne injekční stříkačku, místo ní vyžaduje ruční zbraň a vědro.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris přišel o panictví dříve než jeho otec.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže zvednout i nepřijatý hovor.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když bůh řekl: „Budiž světlo!“, Chuck Norris řekl: „Popros!“.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nežvýká žvýkačky, ale plátky z plechu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí střílet za roh – bez revolveru!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jen Chuck Norris létá Red Bull Air Race s Boeingem 747 plným lidí.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Víte jak se říká tlesknutí Chucka Norrise?", punchline: "Velký třesk.", tags: ["chuck norris"] },
+            { setup: "Kámen porazí nůžky, nůžky porazí papír, papír porazí kámen. Chuck Norris porazí všechny 3 najednou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris spadne do vody, nebude mokrý, ale voda bude Chuck Norris.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí tleskat jednou rukou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nemá otvírák na plechovky, prostě se do plechovky prokouše.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris tě může praštit tak moc, že ještě tvé děti bude bolet hlava.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris spí v noci s rozsvíceným světlem. Ne že by se Chuck Norris bál tmy, ale tma se bojí Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris dokáže vypít vodu z kohoutku. Na ex!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí dát umělé dýchání sám sobě. Ne, že by to tedy potřeboval.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris si dokáže nosem dosáhnout na špičku jazyka!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou snědl dort dřív, než mu stihli říct, že je v něm striptérka.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nenosí hodinky. ON rozhoduje jaký je čas.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris umí zadržet dech na devět let.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Tornáda neexistují, to jen Chuck Norris rychle za sebou provádí své kopy s otočkou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris škrtl zápalkou, vzniklo slunce.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Google nemůže něco najít, zeptá se Chucka Norrise.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris nemá bankovní účet. Vždycky jenom oznámí bance kolik potřebuje.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris za sebou nikdy nezavírá dveře. Projde-li totiž Chuck Norris dveřmi, již není co zavírat!", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris jednou snědl 100 kilo hovězích steaků za hodinu. Z toho 45 minut strávil sexem se servírkou.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Když Chuck Norris přechází ulici, auta se musí rozhlédnout na obě strany.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jednou si Chuck Norris spletl klíče a pokusil se odemknout svůj dům klíčky od auta. Dům nastartoval.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Co potřebuje blondýna na běh 100 metrů?", punchline: "Tretry, dres, mapu a kompas.", tags: ["blondýna"] },
+            { setup: "Co si nese blondýna, když má pod paží otýpku sena?", punchline: "Externí paměťový modul.", tags: ["blondýna"] },
+            { setup: "Co udělá blondýna, když se rozběhne proti blondýně?", punchline: "Rozbije zrcadlo.", tags: ["blondýna"] },
+            { setup: "Co nejlepšího umí udělat blondýnka k večeři?", punchline: "Rezervaci.", tags: ["blondýna"] },
+            { setup: "Blondýnka letí do Londýna. Jak ji připravíte o místo u okna?\nŘekněte jí, že sedadla do Londýna jsou v prostřední řadě.", punchline: "", tags: ["blondýna"] },
+            { setup: "Co dělá sedmnáct blondýnek před kinem?", punchline: "Čekají, až přijde ještě jedna, protože film je přístupný až od osmnácti.", tags: ["blondýna"] },
+            { setup: "Proč blondýna jí jogurt už v obchodě?", punchline: "Protože je tam napsáno „K okamžité spotřebě“.", tags: ["blondýna"] },
+            { setup: "Dvě blondýny hrajou šachy. – „Góóól!“ – „To není tenis, ty krávo.“", punchline: "", tags: ["blondýna"] },
+            { setup: "Jak se říká blondýnce na vysoké škole?", punchline: "Návštěva.", tags: ["blondýna"] },
+            { setup: "Jak si blondýna mohla zlomit nohu při hrabaní listí?", punchline: "Spadla ze stromu.", tags: ["blondýna", "strom"] },
+            { setup: "Víte, proč nosí blondýnka k počítači plavky?", punchline: "Aby mohla surfovat ne webu.", tags: ["blondýna", "počítač"] },
+            { setup: "Ptá se blondýna druhé blondýny: „Prosím tě, píše se správně Irák nebo Irán?“", punchline: "", tags: ["blondýna"] },
+            { setup: "Proč blondýny nechodí do kurzu sebeobrany?", punchline: "Protože je nic nenapadne.", tags: ["blondýna"] },
+            { setup: "Stojí těhotná blondýna před zrcadlem a hladí si bříško. Po chvilce řekne: Hmm…Doufám že je to moje.", punchline: "", tags: ["blondýna"] },
+            { setup: "Šéf blondýnce: „Váš nástupní plat je 17 000 Kč. Časem můžete mít plat 25 000 Kč.“", punchline: "Blondýnka: “ Tak já tedy přijdu raději časem.“", tags: ["blondýna"] },
+            { setup: "Lékař říká blondýnce: „Svlečte se a lehněte si!“ „A to jen tak?", punchline: "Bez předehry?“", tags: ["blondýna", "doktor"] },
+            { setup: "Policajt zastaví blondýnu na ulici a říká: „Slečno, váš pes nemá košík!“ „Ale my nejdeme nakupovat.“ „Promiňte, to jsem nevěděl.“", punchline: "", tags: ["blondýna", "pes", "policie"] },
+            { setup: "Nemocná blondýnka píše SMSku kamarádce: „38,5! Všechno mě bolí!“\nKamarádka obratem odepíše: „Tak si najdi někoho s kratším!“", punchline: "", tags: ["blondýna", "nemoc"] },
+            { setup: "Co dělá blondýna zavřená ve skříni?", punchline: "No přeci poslouchá Kabáty.", tags: ["blondýna"] },
+            { setup: "Co má společného UFO a chytrá blondýnka?", punchline: "O obojím se často mluví, ale nikdo to ještě opravdu neviděl.", tags: ["blondýna"] },
+            { setup: "U doktora: „Abyste se vyléčila, musíte jíst alespoň jedno vejce denně.“\n„Ale já vejce nesnáším!“", punchline: "„Říkám jíst, ne snášet.“", tags: ["doktor", "jídlo", "lékař"] },
+            { setup: "Jak se cítíte v nových brýlích?", punchline: "“ ptá se doktor. „Výborně. Najednou potkávám spousty známých, které jsem neviděl celé roky.“", tags: ["doktor", "lékař"] },
+            { setup: "Baví se dva lékaři: „Ty, co říkáš, jsou ústřice zdravé?“", punchline: "„Já nevím, ještě jsem žádnou neléčil.“", tags: ["doktor", "lékař"] },
+            { setup: "Jenom žádnou paniku“, uklidňuje lékař pacienta, „tuto operaci už jsme prováděli nejméně třicetkrát. Jednou se musí povést.“", punchline: "", tags: ["doktor", "lékař"] },
+            { setup: "Baví se dva grafici:\n„Já jsem sbalil novou holku, je krásná, 90-60-90…“", punchline: "„Cože? Tmavě fialová?“", tags: ["it", "počítač", "programátor"] },
+            { setup: "A Bůh pravil: „Noe, udělej zálohu.. budu formátovat.“", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "Víte, co dělá windows na měsíci?", punchline: "Padá 6 krát pomalejc.", tags: ["it", "počítač", "programátor"] },
+            { setup: "Webmaster vyplňuje dotazník:\nVěk: 25\nVýška: 185", punchline: "Barva očí: #4040FF", tags: ["it", "počítač", "programátor"] },
+            { setup: "Šťastný Nový rok 2010 přeje Internet Explorer.", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "Za manžela jsem si vzala programátora…Když jsem se ho zeptala, jak mám otevřít jar, řekl mi, abych si stáhla Javu.", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "Jaký je rozdíl mezi spisovatelem a programátorem?", punchline: "Výtvory slavného programátora musí dávat smysl.", tags: ["it", "počítač", "programátor", "pták"] },
+            { setup: "Co slyší webmaster, když jede vlakem?", punchline: "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>", tags: ["it", "počítač", "programátor", "vlak"] },
+            { setup: "Kdo se směje naposledy, má největší ping.", punchline: "", tags: ["it", "počítač", "programátor", "zima"] },
+            { setup: "Tatranky.zip – energie sbalená na cesty.", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "Je to malé, zelené a strašně nebezpečné. Co to je?", punchline: "Žabička s rootovskými právy.", tags: ["hádanka", "it", "počítač", "programátor"] },
+            { setup: "Chuck Norris dokáže předběhnout svůj vlastní stín.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris musí využívat kaskadéra pro záběry, ve kterých pláče.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Chuck Norris přesně ví, jak skončí seriál seriál Ordinace v Růžové zahradě.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jakou koledu mají rodičové po celém světě nejraději?", punchline: "Tichou noc.", tags: ["zima"] },
+            { setup: "Hoši, nemůžete do toho granátu řezat. Vždyť vám vybouchne!“\n„Nevadí, pane poručíku. My máme ještě jeden.“", punchline: "", tags: ["policie"] },
+            { setup: "Z policejního hlášení: Poškozený byl zasažen čtyřmi výstřely. Dva byly smrtelné, další dva naštěstí ne.", punchline: "", tags: ["policie"] },
+            { setup: "Které čtyři roky jsou nejhorší v životě policisty?", punchline: "První třída.", tags: ["policie", "škola"] },
+            { setup: "Skočí policajt do tramvaje a zařve: „Sledujte ten taxík!“", punchline: "", tags: ["policie", "zima"] },
+            { setup: "Policajt zastaví šoféra a povídá:\n„Budete foukat.“", punchline: "„Rád. Kde vás bolí?“", tags: ["policie"] },
+            { setup: "Jak policajti sází brambory?", punchline: "Vysypou je na hromadu a řeknou: „Jménem zákona, rozejděte se!“", tags: ["policie"] },
+            { setup: "Dnes v noci bylo ze schodiště ukradeno zábradlí.", punchline: "Policie se nemá čeho chytit.", tags: ["policie"] },
+            { setup: "Víte proč chodí policajti vždycky se psem?", punchline: "Víc hlav, víc rozumu.", tags: ["policie"] },
+            { setup: "Volá policajt na letiště: „Jak dlouho letí letadlo do New Yorku?", punchline: "“ – „Okamžik…“ – „Děkuji.“", tags: ["policie"] },
+            { setup: "Z policejního protokolu:\nOtisky z místa činu nebylo možné sejmout, neboť zloděj na co sáhnul, to ukradnul.", punchline: "", tags: ["policie"] },
+            { setup: "Co je to 90-50-90?\nJízda městem kolem dopravního policajta.", punchline: "", tags: ["hádanka", "policie"] },
+            { setup: "Proč si policajt nečistí zuby?\nProtože se mu nevejde mýdlo do úst.", punchline: "", tags: ["policie"] },
+            { setup: "Čech a Američan hrají šachy.\nAmeričan táhne a říká: „Jezdec na D1!“", punchline: "Čech to komentuje: „To bych nedělal…“", tags: ["hra", "čeština"] },
+            { setup: "Švýcarská pošta zkouší doručovat balíky dronem.\nČeská pošta zkouší doručovat balíky…", punchline: "", tags: [] },
+            { setup: "Seznam: najdu tam co neznám! Google: Najdu tam, co hledám!", punchline: "", tags: ["zima"] },
+            { setup: "Víte, jak se nazývá schopná vláda České republiky?", punchline: "Zázrak!", tags: [] },
+            { setup: "Jenom Chuck Norris se v Česku dožije důchodu.", punchline: "", tags: ["chuck norris"] },
+            { setup: "Jak zní mužská varianta pojmu krkavčí matka?", punchline: "Čapí otec.", tags: ["lidi"] },
+            { setup: "Holky, co děláte?\nHrajeme Wimbledon…\nA můžu si zapinkat s váma?", punchline: "Ne, Ester, ty NE!", tags: ["zima"] },
+            { setup: "Novinky: „Teroristé, kteří minulý týden obsadili vinný sklípek na okraji Znojma, stále nejsou schopni formulovat své požadavky.“", punchline: "", tags: [] },
+            { setup: "„Pane průvodčí, jede ten vlak na Písek?“", punchline: "„Ne, na naftu!“", tags: ["vlak"] },
+            { setup: "Proč nemůžou poslat koně do vesmíru?", punchline: "Protože je riziko, že by odtáhli velký a malý vůz!", tags: ["kůň"] },
+            { setup: "Co je zelené, chlupaté a zabilo by vás to, kdyby to na vás skočilo ze stromu?", punchline: "Biliárový stůl.", tags: ["strom"] },
+            { setup: "Potkají se dvě blondýnky a jedna říká druhé: „Když uhádneš, kolik mám laků na nehty, tak ti oba dva dám.“ „Tak jo. Pět?“", punchline: "", tags: ["blondýna"] },
+            { setup: "Vrátí se muž ze služební cesty a vidí svou ženu blondýnku sedět na židli a po kolena má samou strouhanku. Blondýna ale stále dál strouhá další a další rohlíky. Tak se jí zeptá: „Proboha, co to tady vyvádíš?", punchline: "“ Blondýna odpoví: „Chtěla jsem ti na přivítanou udělat řízky a recept v kuchařce začíná: Strouhej tři dny staré rohlíky.“", tags: ["blondýna", "lidi"] },
+            { setup: "Seznámí se mladý muž s blondýnkou. Při rozloučení se zeptá: „Mohu ti zítra zavolat do práce?", punchline: "“ „Můžeš, ale kdyby to brala šéfová, tak to polož.“ „Jak jí ale poznám?“ „Je zrzavá a má brejle.“", tags: ["blondýna", "lidi"] },
+            { setup: "Blondýnka si v letadle sedne k oknu, za chvilku k ní přijde fešný chlapík a povídá: „Promiňte, slečno, ale toto sedadlo je moje.“ Blondýnka: „Dej si odpich mladej, takový blbý finty znám… neotravuj!“ Chlapík pokrčí rameny a prohodí: „No tak si s tím Boeingem startuj sama…“", punchline: "", tags: ["blondýna", "lidi"] },
+            { setup: "Sedí blondýnka a brunetka u televize a dívají se na film. Brunetka povídá: Hele, vsadíme se jo?", punchline: "Já sázím že ten chlap skočí. Blondýnka: Tak jo já sázím že neskočí. Daly 100 Kč na stůl a ten chlap skočil. Jenže brunetka řekne: Hele já ten film už viděla a věděla jsem to. A blondýnka nato: No, já ten film taky viděla, ale myslela jsem, že podruhý už neskočí!", tags: ["blondýna", "lidi"] },
+            { setup: "Říká blondýnka druhé: „Tak co?", punchline: "Udělala jsi autoškolu?“ „Ne“ odpovídá druhá.“ „Jak to?“ ptá se první. „Protože, když jsem jela ke kruháku, byla tam značka 40, tak jsem ho 40x objela.“ „A nepřepočítala ses?“", tags: ["blondýna"] },
+            { setup: "Vystoupí dvě blondýnky z auta a zabouchnou si vevnitř klíč. Jedna se zkouší dostat dovnitř pilníkem a druhá rukama. Vtom začne hřmít a jedna říká: „Ježiši Petro, začíná pršet a my jsme nezatáhly střechu!“", punchline: "", tags: ["blondýna"] },
+            { setup: "Blondýna vesluje po poli. Další blondýna zastaví vedle pole a křičí na ni: „Ty krávo! Kvůli takovým, jako jsi ty, se o nás říkají takové věci!! Kdybych uměla plavat, tak ti rozbiju hubu!!“", punchline: "", tags: ["blondýna"] },
+            { setup: "Blondýnka říká manželovi: „Miláčku, můžeme mít jen čtyři děti.“ „A proč?", punchline: "“ „Četla jsem, že každé páté dítě, které se narodí, je Číňan.“", tags: ["blondýna"] },
+            { setup: "Blondýnka hraje Chcete být milionářem a na poslední otázku si vybere posledního žolíka a volá přítelkyni, též blondýnce: „Ahoj Marto, tady Katka, hraju Milionáře a poslední – milionová – otázka je: Který z těchto ptáků si nestaví hnízdo?", punchline: "Orel, vlaštovka, kukačka nebo bažant?“ Marta na beton tvrdí, že kukačka a Katka vyhraje milión. Když to večer zapíjejí, ptá se Katka: „Marto, jak sis mohla být tak jistá?“ A ta ji poučí: „Přece každý ví, že kukačky bydlí v hodinách…“", tags: ["blondýna", "pták", "zima"] },
+            { setup: "Přijde blondýnka do sexshopu a ptá se: „Kolik stojí ten modrý vibrátor?", punchline: "“ „Čtyři sta korun.“ odvětí prodavač. „A za kolik je ten zelený?“ „Ten je za sedm set korun.“ „No a kolik stojí ten červený?“ „Milá slečno, to je hasící přístroj!“", tags: ["blondýna", "peníze"] },
+            { setup: "Dva kamarádi si povídají v autobuse. Jeden říká tomu druhému vtip: „Víš, co mají blondýny v hlavě?", punchline: "“ „Ne, nevím.“ – „Vakuum!“ – „Ha ha ha…“ Nato se otočí blondýnka sedící na sedadle před nimi: „No, vždycky lepší něco než nic!“", tags: ["blondýna"] },
+            { setup: "Soutěží blondýnka v soutěži Chcete být milionářem a je na otázce za 5 000 Kč. Otázka zní: Jaké je hlavní město Španělska?", punchline: "Blondýnka váhá a nakonec si zvolí nápovědu po telefonu a volá mamince: „Maminko, prosím tě, mám otázku za 5 000 Kč. Jaké je hlavní město Španělska? Co myslíš, mám si vzít nápovědu od diváků nebo padesát na padesát?“", tags: ["blondýna", "maminka"] },
+            { setup: "Blondýnka se chlubí druhé, že potkala kouzelného dědečka, který jí slíbil splnit přání. „A co ti nabídl?", punchline: "“, ptá se druhá. „Buď výtečnou paměť nebo velké poprsí.“ „A co sis vybrala?“ „Já už ani nevím!“", tags: ["blondýna", "kouzelník", "rodina"] },
+            { setup: "Jde blondýnka k zvěrolékaři a povídá: \n„Dobrý den pane doktore! Já jsem tady, protože mě bolí hlava.“ \n„Ale paní, já jsem zvěrolékař, s bolavou hlavou jděte k normálnímu lékaři!“", punchline: "„Já bych šla, ale všichni říkají, že jsem kráva, tak jsem přišla za vámi…“", tags: ["blondýna", "doktor", "kráva"] },
+            { setup: "Přijde blondýna do prodejny potravin a ptá se:\n„Co je to velké zelené?“\n– „To je meloun“, říká prodavač.\n„Tak mi dejte jeden. A co je to menší oranžové?\n– „To je pomeranč.“\n„Tak mi jich dejte deset. A co je to malé modré?“\n– „To jsou švestky.“„Tak mi jich dejte sto. A co je to nejmenší černé?“", punchline: "– „Tak na to se vyser, to je mák.“", tags: ["blondýna", "hádanka"] },
+            { setup: "Soudce se obrátí ke svědkyni blondýnce. „Víte, co vás čeká, když budete křivě přísahat?", punchline: "“ „Ano,“ odpoví svědkyně, „kožich a deset tisíc na ruku.“", tags: ["blondýna"] },
+            { setup: "Na policejní stanici zvoní telefon. Po zvednutí se z něj ozve: „Okamžitě přijeďte, právě jsem ho zabila.“ „Koho?", punchline: "“ „Králíka.“ „Osobo nežertujte, tohle je tísňová linka! A kdo vůbec volá?“ „Králíková.“", tags: ["policie"] },
+            { setup: "Letí dva policajti ve vrtulníku a jeden povídá druhému: „Rozbila se nám klimatizace.“ „Jak jsi to poznal?", punchline: "“ „Protože pilot se potí a ten velkej větrák nad náma se netočí.“", tags: ["policie"] },
+            { setup: "Cizince podezřelého z vyloupení banky vyslýchají na policejní stanici v přítomnosti tlumočníka.\nPolicajt: „Kam jste schoval peníze?“\nTlumočník: „Kam jste schoval peníze?“\nZloděj: „Neřeknu.“\nTlumočník: „Neřekne.“\nPolicajt: „Když neřekneš, zavřeme tě.“\nTlumočník: „Když neřekneš, zavřou tě.“\nZloděj: „Neřeknu.“\nTlumočník: „Neřekne.“\nPolicajt: „Když neřekneš, zastřelím tě.“\nTlumočník: „Když neřekneš, zastřelí tě.“\nZloděj: „Schoval jsem je v kuchyni pod podlahou.“", punchline: "Tlumočník: „Neřekne.“", tags: ["peníze", "policie"] },
+            { setup: "Dva policisté vyjdou pozdě v noci z restaurace a vidí, jak jim v dálce mizí posledního autobus. „Co budeme dělat, tady taxíky nejezdí, jak se teď dostaneme domů?", punchline: "“, běduje jeden. „Víš co, tady jsou garáže dopravních podniků, vlezeme tam a jeden autobus si vypůjčíme.“ „Tak dobrá“, souhlasí první policista, „tak běž pro autobus, já budu hlídat.“ Druhý policista tam vleze a když se půl hodiny nic neděje, vydá se ten první za ním. „Co se děje?“ „Ale, nemůžu najít dvaadvacítku. Budeme muset ukrást třicetčtyřku a vystoupit u kostela.“", tags: ["policie", "zima"] },
+            { setup: "Přijde chlap do hospody a volá: „Kluci já sem slyšel super vtip o policajtech, musim vám ho říct!“ Najednou se od stolu zvedne chlap a povídá: „Pane já jsem policista.“ A muž na to odvětí: „To nevadí já ten vtip řeknu pomalu a 2x.“", punchline: "", tags: ["lidi", "policie"] },
+            { setup: "Šetří se všude, benzín je čím dál dražší, a tak u městské policie zřídili jezdecký oddíl. Když náčelník za tři měsíce zjistil, že koně jsou kost a kůže, zeptal se: „A krmíte je vůbec?", punchline: "“ „Ještě ne,“ informuje strážmistr Hájek, „ale budeme. Byli jsme instruováni, že koně žerou ob rok.“", tags: ["kůň", "policie"] },
+            { setup: "Velitel učí nováčky matematiku a povídá: „Dám vám příklad 5-7+2=0 rozumíte tomu?", punchline: "“ Všichni nováčci vrtí hlavou že nerozumí. Tak velitel praví: „Tak jinak, dám vám příklad. V autobuse jede 5 policajtů, 7 jich vystoupí. A kolik jich musí do autobusu nastoupit, aby tam nikdo nebyl?“", tags: ["matematika", "policie"] },
+            { setup: "Policajt se oženil. Za pár dnů přijde do služby a kolegové samozřejmě vyzvídají: „Tak co? Jaká byla svatební noc?“\n„Kluci, to mi nebudete věřit,“ povídá novomanžel. „Já jsem byl ráno tak rozespalej, že jsem ze zvyku vytáhl peněženku. Vzal jsem z ní sedm stovek a položil je na noční stolek. Manželka se probudila, kouká na to…“\n„Průšvih, co?!“ chytají se za hlavu kolegové.", punchline: "„Ne, dobrý! Říkala, že v manželství už to není tak drahý – a vrátila mi dvě stovky!“", tags: ["policie"] },
+            { setup: "Policajt zastaví auto a pustí se do jeho technické kontroly. Přikáže řidiči otevřít kapotu a ukazuje na různé součástky:\n„Co je toto?“\n„Svíčka.“\n„A toto?“\n„Svíčka.“\n„A toto?“\n„Svíčka.“", punchline: "Policajt se naštve a vykřikne: „Tak co? Je tohle auto nebo pojízdný betlém?“", tags: ["auto", "hádanka", "policie"] },
+            { setup: "„Tak co, Pepíčku, jaký je ten váš nový učitel?“\n„Hodný a zbožný, tatínku.“\n„Zbožný?“ „Ano. Při každé mé odpovědi koukal k nebi a jenom říkal: Pane bože, pane bože!“", punchline: "", tags: ["pepíček", "tatínek", "učitel", "škola"] },
+            { setup: "Přijde Pepíček do hospody, posadí se ke stolu a říká servírce: „Dvě deci červeného vína.“\n„A kolikpak je ti let, chlapečku?“ zajímá se servírka.\n„Osm.“ odpoví Pepíček.\n„A to by ti nestačil džus?“", punchline: "„Stačil, ale chybí mi dvě koruny.“", tags: ["lidi", "peníze", "pepíček", "škola"] },
+            { setup: "Paní učitelka: „Pepíčku, zase máš domácí úkol celý špatně!“\nPepíček: „To bude tátu mrzet, dalo mu to hodně práce.“", punchline: "", tags: ["pepíček", "učitel", "učitelka", "úkol", "škola"] },
+            { setup: "Pan učitel píše na tabuli vzorec HO2 a ptá se podřimujícího Petra co je to za vzorec?", punchline: "-Petr koktá:,,Pane učiteli mám to na jazyku“. -Tak to honem vyplivni ,protože to je kyselina.", tags: ["hádanka", "lidi", "učitel"] },
+            { setup: "U zkoušky uklidňuje profesor vystresovaného studenta.\n„Pane kolego, buďte klidný. Prostě si představte, že jste v divadle a jste herec, který odříkává svou roli, a já jsem divák.“", punchline: "„V tom případě žádám nápovědu.“", tags: ["pták"] },
+            { setup: "Honí se dvě funkce a jedna křičí na druhou: „Až tě chytím, tak tě zderivuju!“ A ta druhá jí na to odpoví: „Mně to nevadí, já jsem e na x-tou!“", punchline: "", tags: [] },
+            { setup: "S jakým „i“ napíšeme větu: „Ženy si hrál- a muži šl- poté domů?“\n„Ženy si hrály s tvrdým a muži šli poté domů s měkkým.“", punchline: "", tags: ["lidi"] },
+            { setup: "Přijde elektrikář na jednotku intenzivní péče, chvíli si prohlíží pacienty, všichni na přístrojích, a pak povídá: „Pořádně se nadechněte, budu měnit pojistky!“", punchline: "", tags: ["doktor", "lékař"] },
+            { setup: "Studentka medicíny předvádí na maketě porod kleštěmi. Profesor ji chvíli pozoruje a povídá: „Výborně! Teď ještě třískněte otce po hlavě a vyvraždila jste komplet celou rodinu!“", punchline: "", tags: ["doktor", "lékař"] },
+            { setup: "Lékař má v noci ucpaný záchod. Manželka říká: „Zavolej instalatéra!“ „Teď v noci?“\n„Když tě volal instalatér v noci, tak jsi taky šel.“\n„No dobře.“ Zavolá tedy instalatérovi. Tomu se nechce, ale lékař ho přesvědčuje: „Když někdo zavolá mě v noci, přijdu. K vám jsem taky došel v noci, když jste mě potřeboval!“ Instalatéra nakonec přemluví a ten za pár minut dojde. Přijde k záchodu, hodí tam dvě tabletky a říká: „Pokud se to do rána nezlepší, zavolejte mi.“", punchline: "", tags: ["doktor", "lékař"] },
+            { setup: "„Tak co, poslechl jste mne a spal jste o dovolené při otevřeném okně, pane Breburdo?“\n„Ano, pane doktore.“\n„A obtíže zmizely?“", punchline: "„Ne, jen hodinky, peněženka a jeden oblek.“", tags: ["doktor", "lékař"] },
+            { setup: "Paní učitelka se ptá: „Zdendo, čím chceš být?“\n„Lékařem.“\n„Ale vždyť ty se bojíš injekcí.“\n„Bojím, ale až budu doktor, pak budu na bezpečnější straně jehly já.“", punchline: "", tags: ["doktor", "lékař", "učitel", "učitelka"] },
+            { setup: "Přijde mladá slečna k doktorovi a povídá: „Pane doktore, já jak si dám skleničku, tak mám hned chuť padnout nějakému chlapovi do náruče. Co mám dělat?", punchline: "“ Doktor vyndá láhev vodky a povídá: „Nalejte si….“", tags: ["doktor", "lidi", "lékař"] },
+            { setup: "Přijde paní k psychiatrovi: „Pane doktore, představte si, že když před někým řeknu Abrakadabra, tak zmizí… Sakra, doktore, kde jste?“", punchline: "", tags: ["doktor", "lékař"] },
+            { setup: "„Doktor si dělá starosti o moje zdraví.“\n„A co ty na to?“", punchline: "„Co je mi po jeho starostech.“", tags: ["doktor", "lékař"] },
+            { setup: "Problém s počítačem lze vyřešit dvěma způsoby:\n1) vyhodit počítač z okna", punchline: "2) vyhodit okna z počítače", tags: ["it", "počítač", "programátor"] },
+            { setup: "Manželka pošle programátora do obchodu: „Dojdi pro rohlíky, a když budou mít vejce, vem jich deset.“ Programátor přijde do obchodu a ptá se: „Máte vejce?", punchline: "“ Prodavačka: „Ano.“ Programátor „Tak mi dejte 10 rohlíků.“", tags: ["it", "jídlo", "počítač", "programátor"] },
+            { setup: "Doktor mi říkal, že mám po té dlouhé zimě oslabený organismus. Tak jsem se ptal v lékárně a nabídli mi beta karoten. Na to jim seru. Počkám si, až bude plná verze.", punchline: "", tags: ["doktor", "it", "počítač", "programátor"] },
+            { setup: "Jeden mladý muž povídá: „Chci být velkým spisovatelem.“ A co to pro tebe znamená velkým?", punchline: "„To znamená, že chci psát něco, co bude číst celý svět, něco, co přinutí lidi jednat emocionálně, něco, co je přinutí ječet, křičet a řvát vztekem a zoufalstvím!“ Nyní pracuje pro Microsoft a píše chybové hlášky.", tags: ["it", "lidi", "počítač", "programátor", "pták"] },
+            { setup: "Povídají si dva informatici: „Představ si, včera jsem se seznamil s nádhernou blondýnou, pozval jsem jí k sobě, trochu jsme se napili, tancovali… a najednou mi říká: Svlíkni se!“\n„Teeeda, ty máš štěstí… no a dělej, povídej, co bylo dál?“\n„No svlíknul jsem se, a pak jdu na ní, posadil jsem jí na stůl vedle toho novýho kompu…“", punchline: "„Nekecej, ty máš novej komp!? Jakej procesor?“", tags: ["blondýna", "it", "počítač", "programátor"] },
+            { setup: "Pokud je Internet Explorer dostatečně statečný na to, aby se tě zeptal, zda ho chceš jako defaultní prohlížeč, neříkej, že ty nedokážeš pozvat dívku na rande.", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "#4e5054, #272727, #282828, #292929, #2b2b2b, #2c2c2c, #2e2e2e, #313131, #323232, #343434, #353535, #373737, #393939, #3a3a3a, #3c3c3c, #3f3f3f, #404040, #424242, #444444, #454545, #474747, #484848, #4a4a4a, #4b4b4b, #4d4d4d, #4e4e4e, #505050, #515151, #535353, #565656, #575757, #585858, #595959, #5b5b5b, #5c5c5c, #5e5e5e, #616161, #626262, #646464, #656565, #676767, #6a6a6a, #6b6b6b, #6c6c6c, #6d6d6d, #6f6f6f, #727272, #737373, #757575, #767676, #777777, #7b7b7b, #7c7c7c, #7d7d7d, #7e7e7e, #808080, #818181, #838383, #868686, #878787, #888888, #898989, #8b8b8b, #8c8c8c, #8e8e8e, #919191, #929292, #949494, #959595, #979797, #9a9a9a, #9b9b9b, #9c9c9c, #9d9d9d, #9f9f9f, #a0a0a0, #a2a2a2, #a5a5a5, #a6a6a6, #a8a8a8, #a9a9a9, #ababab, #aeaeae, #afafaf, #b0b0b0 – Padesát odstínů šedi.", punchline: "", tags: ["it", "počítač", "programátor"] },
+            { setup: "Velitel řve při výcviku na vojáky: „Tak, a teď se budeme plazit po rovné zemi!!“\nZ řad vojáků se ozve: „Ale, pane veliteli, Země je přeci kulatá!“\nVelitel: „Kdo to řekl??“\nVoják: „Prosím, Koperník!“", punchline: "Velitel: „Koperník – padesát kliků!!!“", tags: [] },
+            { setup: "Víte, proč se Velká čínská zeď řadí mezi sedm divů světa?", punchline: "Protože čínský výrobek, který by skutečně dlouho vydržel, je neuvěřitelná vzácnost.", tags: [] },
+            { setup: "Potápěč se kochá podvodním světem asi šesti metrů pod hladinou, když ve stejné hloubce vidí nějakého kolegu. Ten kupodivu nemá žádný dýchací přístroj. Potápěč sestoupí o další dva metry a druhý ho po chvilce následuje. Sestoupí ještě hlouběji, ale po pár minutách je druhý zase vedle něho. Potápěči to nejde na rozum, a tak vyndá tabulku na psaní pod vodou se speciální křídou a napíše:\n„Jak to děláš bez přístroje?“", punchline: "Druhý mu vytrhne tabulku a napíše: „JÁ SE TOPÍM!“", tags: ["zima"] },
+        ];
+
+        // ========================================================
+        // NORMALIZACE (odstraní diakritiku pro hledání)
+        // ========================================================
+        function normalizuj(text) {
+            return text.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim();
+        }
+
+        // ========================================================
+        // HLEDÁNÍ
+        // ========================================================
+        const keywordInput = document.getElementById('keyword');
+        const jokeCard = document.getElementById('jokeCard');
+        const errorDiv = document.getElementById('error');
+        const statsDiv = document.getElementById('stats');
+
+        // Historie zobrazených ID (aby se vtipy neopakovaly hned po sobě)
+        let historie = [];
+
+        // Zobraz počet vtipů
+        statsDiv.textContent = `📚 V databázi je ${VTIPY.length} vtipů`;
+
+        keywordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') hledejVtip();
+        });
+
+        function rychleHledani(slovo) {
+            keywordInput.value = slovo;
+            hledejVtip();
+        }
+
+        const funEmojis = ['😂','🤣','😆','😹','🤪','😜','🥳','🎉','😎','🤩','🙃','😁'];
+
+        function hledejVtip() {
+            const keyword = keywordInput.value.trim();
+            errorDiv.classList.remove('visible');
+
+            let kandidati;
+            if (!keyword) {
+                // Náhodný vtip ze všech
+                kandidati = VTIPY.map((v, i) => i);
+            } else {
+                const norm = normalizuj(keyword);
+                kandidati = VTIPY
+                    .map((v, i) => ({ v, i }))
+                    .filter(({ v }) => {
+                        // Hledáme v tagách, setup i punchline
+                        if (v.tags.some(t => normalizuj(t).includes(norm) || norm.includes(normalizuj(t)))) return true;
+                        if (normalizuj(v.setup).includes(norm)) return true;
+                        if (normalizuj(v.punchline || '').includes(norm)) return true;
+                        return false;
+                    })
+                    .map(({ i }) => i);
+            }
+
+            if (kandidati.length === 0) {
+                showError(`😕 K slovu „${keyword}\" žádný vtip není. Zkus jiné slovo nebo klikni na 🎲 Náhodný!`);
+                jokeCard.classList.remove('visible');
+                return;
+            }
+
+            // Zkus vybrat takový, který nebyl nedávno
+            let bezHistorie = kandidati.filter(i => !historie.includes(i));
+            if (bezHistorie.length === 0) {
+                historie = [];
+                bezHistorie = kandidati;
+            }
+
+            const vybranyIdx = bezHistorie[Math.floor(Math.random() * bezHistorie.length)];
+            historie.push(vybranyIdx);
+            if (historie.length > Math.min(10, Math.floor(VTIPY.length / 2))) historie.shift();
+
+            zobrazVtip(VTIPY[vybranyIdx], kandidati.length, keyword);
+        }
+
+        function zobrazVtip(vtip, pocet, keyword) {
+            document.getElementById('jokeEmoji').textContent = funEmojis[Math.floor(Math.random() * funEmojis.length)];
+            document.getElementById('jokeSetup').textContent = vtip.setup;
+            document.getElementById('jokePunchline').textContent = vtip.punchline || '';
+
+            let meta = '';
+            if (keyword) {
+                meta = `🔎 Pro „${keyword}\" nalezeno ${pocet} vtipů`;
+            } else {
+                meta = `🎲 Náhodný vtip z ${VTIPY.length}`;
+            }
+            document.getElementById('jokeMeta').textContent = meta;
+
+            jokeCard.classList.remove('visible');
+            // Force reflow for animation restart
+            void jokeCard.offsetWidth;
+            jokeCard.classList.add('visible');
+        }
+
+        function showError(msg) {
+            errorDiv.textContent = msg;
+            errorDiv.classList.add('visible');
+        }
+
+        // Při načtení ukaž náhodný vtip na uvítanou
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => hledejVtip(), 400);
+        });
+    </script>
+</body>
+</html>
